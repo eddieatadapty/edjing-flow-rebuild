@@ -1,0 +1,1632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- flow-rebuild template (Growth Audit, v3: + walkthrough video, phone view/QR, localization, paywall today vs proposed). Replace every double-brace placeholder, everything between
+     the SCREENS markers, and the CONTENT json. Rules that brand-check.py enforces are marked RULE.
+     Reference builds: eddieatadapty.github.io/datacamp-flow-rebuild-v2 · bterzic123.github.io/planner5d-flow-rebuild-v2 -->
+<title>edjing Mix Growth Audit</title>
+<meta name="description" content="Five ideas to turn more edjing Mix users into subscribers, each built into a clickable version of edjing Mix's own onboarding. Prepared by Adapty.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- the APP's font (brand.json fonts, or the closest Google family) + a mono if the app shows code -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* BRAND:START — the only place the APP's colours are written as literals. Sampled off the v9 screens on edjing.com
+   (DJ School screen with "Try PRO for free", the decks) — see brand.json "sampled". Used only inside the phone. */
+:root{
+  --b-primary:#0378ec;      /* "Try PRO for free" pill */
+  --b-primary-ink:#ffffff;
+  --b-bg:#18191c;           /* v9 screen ground */
+  --b-surface:#23252a;      /* lesson cards */
+  --b-card2:#303134;        /* raised / selected card, round buttons */
+  --b-ink:#fafafa;
+  --b-ink2:#8d8e91;         /* "Basic" labels */
+  --b-line:#3a3c3f;
+  --b-accent2:#f9b624;
+  --b-star:#f9b624;         /* lesson stars */
+  --b-green:#4ed941;        /* sampler lesson icon */
+  --b-orange:#ea860b;       /* loops lesson icon */
+  --b-sky:#aed9ff;          /* DJ School tab */
+  --b-grad:linear-gradient(180deg,#23252a,#18191c);
+  --b-radius:22px;
+  --b-pill:999px;
+  --b-font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',system-ui,sans-serif;
+  --b-mono:ui-monospace,monospace;
+}
+/* BRAND:END */
+/* A second app family (e.g. a mono for code) is applied HERE, never in SCREENS css (brand-check allows only
+   var(--b-font) there). Prefix with .scr so it beats the screens' font shorthands, e.g.:
+   .scr .code,.scr .instr code{font-family:var(--b-mono)} */
+
+/* ================= the audit page — Adapty's, not the app's. Light, Apple-style. ================= */
+:root{
+  color-scheme:light;
+  --st-ground:#f5f5f7; --st-card:#ffffff; --st-ink:#1d1d1f; --st-ink2:#6e6e73; --st-ink3:#86868b;
+  --st-hair:rgba(0,0,0,.09); --st-link:#0066cc;
+  --st-accent:#18191c;      /* dark brand colour of the APP: buttons, the outcome band */
+  --st-hi:#2b8ff1;          /* bright brand colour of the APP: outcome numbers on the band, idea dots */
+  --st-mark:rgba(43,143,241,.34); /* --st-hi at ~.5 alpha: the highlighter under impact numbers */
+  --st-font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+html,body{margin:0}
+body{background:var(--st-ground);color:var(--st-ink);font-family:var(--st-font);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.47}
+.au-wrap{max-width:1080px;margin:0 auto;padding-inline:22px}
+a{color:var(--st-link)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--st-link);outline-offset:3px;border-radius:6px}
+mark{background:linear-gradient(transparent 62%,var(--st-mark) 62%,var(--st-mark) 92%,transparent 92%);color:inherit;padding:0 .04em}
+
+/* nav */
+.au-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--st-hair)}
+.au-nav-in{max-width:1080px;margin:0 auto;padding-inline:22px;height:52px;display:flex;align-items:center;gap:26px}
+.au-brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.au-brand img{width:26px;height:26px;border-radius:7px;flex:none}
+.au-brand span{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.au-brand small{font-size:15px;font-weight:400;color:var(--st-ink2)}
+.au-nav a{font-size:13px;color:var(--st-ink);text-decoration:none;opacity:.82}
+.au-nav a:hover{opacity:1}
+@media (max-width:560px){.au-nav a.au-opt{display:none}.au-brand small{display:none}}
+
+/* hero */
+.au-top-hero{text-align:center;padding-top:clamp(56px,9vw,96px);overflow:hidden;position:relative}
+.au-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--st-ink);margin:0 0 14px}
+.au-eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--st-hi);box-shadow:0 0 0 3px var(--st-mark)}
+.au-display{font-size:clamp(60px,12vw,120px);line-height:.98;font-weight:700;letter-spacing:-.05em;margin:0}
+.au-lede{font-size:clamp(23px,3.4vw,34px);line-height:1.16;font-weight:600;letter-spacing:-.022em;max-width:760px;margin:22px auto 0;text-wrap:balance}
+.au-lede span{color:var(--st-ink2)}
+.au-byline{font-size:14px;color:var(--st-ink3);margin:18px 0 0}
+.au-ctas{display:flex;gap:26px;justify-content:center;align-items:center;margin-top:30px;flex-wrap:wrap}
+.au-btn{display:inline-block;background:var(--st-accent);color:#fff;border-radius:980px;padding:12px 23px;font-size:17px;font-weight:500;text-decoration:none;border:0;cursor:pointer}
+.au-btn:hover{filter:brightness(1.25)}
+.au-lnk{background:none;border:0;padding:0;color:var(--st-link);font-size:17px;text-decoration:none;cursor:pointer}
+.au-lnk::after{content:"\00a0›"}
+.au-lnk:hover{text-decoration:underline}
+.au-phones{display:flex;justify-content:center;align-items:flex-start;margin-top:clamp(40px,6vw,64px);height:clamp(300px,52vw,560px)}
+.au-hp{flex:none;border:0;padding:0;background:none;cursor:pointer;width:27%;max-width:290px;margin:0 -2.5%;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.au-hp img{display:block;width:100%;height:auto;filter:drop-shadow(0 28px 50px rgba(0,0,0,.2))}
+.au-hp.au-c{width:31%;max-width:330px;z-index:2}
+.au-hp.au-l{transform:translateY(12%) rotate(-5deg)}
+.au-hp.au-r{transform:translateY(12%) rotate(5deg)}
+.au-hp.au-l:hover{transform:translateY(9%) rotate(-5deg)}.au-hp.au-r:hover{transform:translateY(9%) rotate(5deg)}.au-hp.au-c:hover{transform:translateY(-3%)}
+
+/* sections */
+.au-sec{padding-block:clamp(72px,10vw,120px)}
+.au-sec.au-white{background:var(--st-card)}
+.au-kicker{font-size:15px;font-weight:600;color:var(--st-ink2);margin:0 0 12px}
+.au-h2{font-size:clamp(34px,5.2vw,56px);line-height:1.06;font-weight:700;letter-spacing:-.035em;margin:0;text-wrap:balance}
+.au-h2 span{color:var(--st-ink3)}
+.au-split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:end}
+.au-split p{margin:0;font-size:clamp(17px,1.7vw,21px);line-height:1.45;color:var(--st-ink2);letter-spacing:-.01em}
+.au-split p b{color:var(--st-ink);font-weight:600}
+.au-split p + p{margin-top:16px}
+.au-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(48px,7vw,80px);border-top:1px solid var(--st-hair)}
+.au-stat{padding:28px 20px 0 0}
+.au-stat b{display:block;font-size:clamp(40px,5.5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.au-stat span{display:block;font-size:15px;color:var(--st-ink2);margin-top:10px;max-width:22ch}
+.au-notes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px);margin-top:clamp(48px,7vw,72px)}
+.au-note h3{font-size:19px;font-weight:600;letter-spacing:-.015em;margin:0 0 8px}
+.au-note p{margin:0;font-size:15.5px;line-height:1.5;color:var(--st-ink2)}
+.au-note .au-ic{width:36px;height:36px;border-radius:10px;background:var(--st-ground);display:grid;place-items:center;margin-bottom:16px}
+.au-note .au-ic svg{width:19px;height:19px;stroke:var(--st-accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ideas */
+.au-ideas-h{margin-bottom:clamp(32px,5vw,48px)}
+.au-list{background:var(--st-card);border-radius:28px;padding-inline:clamp(20px,4vw,44px)}
+.au-idea{display:grid;grid-template-columns:56px 1fr 220px;gap:20px;align-items:start;padding-block:clamp(26px,3.5vw,36px);border-top:1px solid var(--st-hair)}
+.au-idea:first-child{border-top:0}
+.au-idea .au-num{font-size:15px;font-weight:600;color:var(--st-ink3);font-variant-numeric:tabular-nums;padding-top:6px}
+.au-idea h3{font-size:clamp(21px,2.4vw,26px);line-height:1.2;font-weight:600;letter-spacing:-.022em;margin:0 0 8px}
+.au-idea p{margin:0 0 12px;font-size:17px;line-height:1.5;color:var(--st-ink2);max-width:58ch}
+.au-idea p code{font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--st-ink);background:var(--st-ground);padding:2px 7px;border-radius:6px}
+.au-idea .au-lnk{font-size:15px}
+.au-imp{text-align:right}
+.au-imp .au-v{font-size:clamp(30px,3.6vw,40px);font-weight:700;letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums;color:var(--st-accent)}
+.au-imp .au-l{font-size:13.5px;color:var(--st-ink2);margin-top:8px}
+.au-band{margin-top:20px;background:var(--st-accent);color:#fff;border-radius:28px;padding:clamp(32px,5vw,56px);display:grid;grid-template-columns:1fr auto;gap:clamp(28px,5vw,64px);align-items:center}
+.au-band .au-k{font-size:15px;font-weight:600;color:rgba(255,255,255,.62);margin:0 0 10px}
+.au-band h3{font-size:clamp(24px,3vw,32px);line-height:1.18;font-weight:600;letter-spacing:-.022em;margin:0;text-wrap:balance}
+.au-band .au-fn{font-size:13px;line-height:1.5;color:rgba(255,255,255,.55);margin:16px 0 0;max-width:52ch}
+.au-nums{display:flex;gap:clamp(28px,4vw,48px)}
+.au-nums small{display:block;font-size:13px;color:rgba(255,255,255,.62)}
+.au-nums b{display:block;font-size:clamp(48px,6.5vw,76px);font-weight:700;letter-spacing:-.045em;line-height:1;color:var(--st-hi);font-variant-numeric:tabular-nums;margin:4px 0 8px}
+.au-nums span{font-size:14px;color:rgba(255,255,255,.8)}
+.au-band .au-btn{background:var(--st-hi);color:var(--st-accent);font-weight:600;margin-top:26px}
+
+/* prototype */
+.au-proto-h{text-align:center;max-width:720px;margin:0 auto}
+.au-proto-h p{font-size:clamp(17px,1.7vw,21px);color:var(--st-ink2);margin:14px 0 0}
+.au-seg{display:flex;gap:4px;justify-content:center;margin:clamp(28px,4vw,40px) auto 0;padding:4px;background:var(--st-ground);border-radius:980px;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.au-seg::-webkit-scrollbar{display:none}
+.au-chip{flex:none;display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--st-ink2);font-size:13.5px;font-weight:500;padding:8px 14px;border-radius:980px;cursor:pointer;white-space:nowrap}
+.au-chip:hover{color:var(--st-ink)}
+.au-chip.on{background:var(--st-card);color:var(--st-ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.au-chip i{font-style:normal;font-size:11px;font-weight:700;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--st-hi);color:var(--st-accent)}
+.au-stage{display:grid;grid-template-columns:auto minmax(0,420px);gap:clamp(32px,6vw,72px);justify-content:center;align-items:center;margin-top:clamp(28px,4vw,44px)}
+.phone{width:390px;height:844px;border-radius:56px;padding:10px;background:#0b0d10;box-shadow:0 0 0 1.5px #3a3d42,0 40px 90px rgba(0,0,0,.25);max-width:calc(100vw - 44px)}
+.phone-in{position:relative;width:100%;height:100%;border-radius:46px;overflow:hidden;background:var(--b-bg)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000;z-index:9}
+.sbar{position:absolute;top:0;left:0;right:0;height:52px;display:flex;justify-content:space-between;align-items:center;padding:4px 32px 0;font:600 15px -apple-system,system-ui,sans-serif;color:var(--b-ink);z-index:8;pointer-events:none}
+.au-pn{background:var(--st-ground);border-radius:28px;padding:clamp(26px,3.5vw,38px)}
+.au-pn-k{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--st-ink)}
+.au-pn-k i{width:8px;height:8px;border-radius:50%;background:var(--st-hi);box-shadow:0 0 0 3px var(--st-mark)}
+.au-pn-k.au-ctx{color:var(--st-ink2)}.au-pn-k.au-ctx i{background:var(--st-ink3);box-shadow:none}
+.au-pn-t{font-size:clamp(24px,2.6vw,30px);line-height:1.12;font-weight:700;letter-spacing:-.028em;margin:10px 0 14px;text-wrap:balance}
+.au-pn-h{margin:0;font-size:17px;line-height:1.55;color:var(--st-ink2)}
+.au-pn-h b{color:var(--st-ink);font-weight:600}
+.au-pn-o{margin-top:24px;padding-top:22px;border-top:1px solid var(--st-hair)}
+.au-pn-o .au-lab{font-size:13px;font-weight:600;color:var(--st-ink3)}
+.au-pn-o .au-val{font-size:clamp(38px,4.4vw,50px);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:var(--st-accent);margin-top:6px;font-variant-numeric:tabular-nums}
+.au-pn-o .au-sub{font-size:14px;color:var(--st-ink2);margin-top:4px}
+.au-pn-a{margin:18px 0 0;font-size:14px;line-height:1.5;color:var(--st-ink2)}
+.au-pn-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:28px;padding-top:18px;border-top:1px solid var(--st-hair);font-size:13px;color:var(--st-ink3)}
+.au-pn-nav button{background:var(--st-card);border:0;border-radius:980px;padding:8px 15px;font-size:14px;font-weight:500;color:var(--st-ink);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.au-pn-nav button:disabled{opacity:.35;cursor:default}
+.au-hint{text-align:center;font-size:14px;color:var(--st-ink3);margin:22px 0 0}
+
+/* footer */
+.au-foot{padding-block:56px 72px;border-top:1px solid var(--st-hair)}
+.au-foot details{border-bottom:1px solid var(--st-hair);padding-bottom:18px}
+.au-foot summary{cursor:pointer;font-size:17px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.au-foot summary::-webkit-details-marker{display:none}
+.au-foot summary::after{content:"+";font-size:24px;font-weight:300;color:var(--st-ink2)}
+.au-foot details[open] summary::after{content:"−"}
+.au-srcs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 48px;margin-top:18px}
+.au-srcs h4{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--st-ink3);margin:18px 0 6px}
+.au-srcs dl{margin:0}.au-srcs dt{font-size:14.5px;font-weight:600;margin-top:10px}
+.au-srcs dd{margin:3px 0 0;font-size:14px;line-height:1.5;color:var(--st-ink2)}
+.au-fine{font-size:12.5px;line-height:1.6;color:var(--st-ink3);margin:22px 0 0;max-width:80ch}
+.au-cta-line{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:36px}
+.au-cta-line p{margin:0;font-size:clamp(19px,2.2vw,24px);font-weight:600;letter-spacing:-.02em;max-width:34ch}
+
+@media (max-width:900px){
+  .au-split,.au-band{grid-template-columns:1fr}
+  .au-notes{grid-template-columns:1fr}
+  .au-idea{grid-template-columns:40px 1fr}
+  .au-imp{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:10px}
+  .au-imp .au-l{margin:0}
+  .au-imp .au-v{white-space:nowrap}
+  .au-stage{grid-template-columns:1fr;justify-items:center}
+  .au-pn{width:100%;max-width:520px}
+  .au-srcs{grid-template-columns:1fr}
+}
+@media (max-width:560px){.au-stats{grid-template-columns:1fr}.au-stat{padding:22px 0 0}.au-nums{flex-direction:column;gap:18px}}
+
+/* ================= extras (audit side): video, language, phone view + QR, paywall today vs proposed, ?tour ================= */
+[hidden]{display:none!important}
+/* the device never scrolls: off-screen slides would otherwise make it scrollable by focus / scrollIntoView */
+.phone-in,.scr{overflow:clip}
+/* hero: walkthrough link */
+.au-play::before{content:"▶";font-size:.72em;margin-right:7px;position:relative;top:-1px}
+/* video dialog */
+.au-vid{border:0;padding:0;background:transparent;max-width:min(1120px,94vw);width:100%;overflow:visible}
+.au-vid::backdrop{background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.au-vid-in{background:#000;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.au-vid video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+.au-vid-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 4px 0;font-size:14px}
+.au-vid-bar a{color:#fff;opacity:.85}
+.au-vid-x{background:rgba(255,255,255,.16);border:0;color:#fff;border-radius:980px;padding:8px 16px;font-size:14px;cursor:pointer}
+/* language switch */
+.au-langrow{display:flex;justify-content:center;align-items:center;gap:12px;margin:18px 0 0;font-size:13.5px;color:var(--st-ink2);flex-wrap:wrap}
+.au-lsw{display:inline-flex;gap:2px;padding:3px;background:var(--st-ground);border-radius:980px}
+.au-lsw button{border:0;background:none;padding:6px 13px;border-radius:980px;font-size:13.5px;font-weight:500;color:var(--st-ink2);cursor:pointer;white-space:nowrap}
+.au-lsw button.on{background:var(--st-card);color:var(--st-ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+/* QR card (desktop) / full-screen button (phone) */
+.au-qr{display:flex;align-items:center;gap:18px;margin:26px auto 0;max-width:500px;background:var(--st-ground);border-radius:22px;padding:14px 22px 14px 14px}
+.au-qr img{width:112px;height:112px;border-radius:12px;image-rendering:pixelated;flex:none;background:#fff}
+.au-qr b{display:block;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.au-qr p{margin:4px 0 0;font-size:14.5px;line-height:1.45;color:var(--st-ink2)}
+.au-mobw{display:none;text-align:center;margin-top:22px}
+@media (max-width:900px){.au-qr{display:none}.au-mobw{display:block}}
+/* paywall: today vs proposed */
+.au-cmp{display:grid;grid-template-columns:minmax(0,290px) minmax(0,1fr) minmax(0,290px);gap:clamp(24px,4vw,52px);align-items:center;margin-top:clamp(32px,5vw,52px)}
+.au-cmp figure{margin:0;text-align:center}
+.au-cmp figure img{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 44px rgba(0,0,0,.18))}
+.au-cmp figcaption{margin-top:14px;font-size:15px;font-weight:600}
+.au-cmp figcaption span{color:var(--st-ink2);font-weight:400}
+.au-cmp-go{border:0;padding:0;background:none;cursor:pointer;display:block;width:100%;transition:transform .3s}
+.au-cmp-go:hover{transform:translateY(-4px)}
+.au-chg{list-style:none;margin:0;background:var(--st-card);border-radius:24px;padding:4px clamp(18px,2.4vw,28px)}
+.au-chg li{padding:15px 0;border-top:1px solid var(--st-hair)}
+.au-chg li:first-child{border-top:0}
+.au-chg h4{margin:0 0 7px;font-size:16px;font-weight:600;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.au-chg h4 i{font-style:normal;font-size:12px;font-weight:600;color:var(--st-accent);background:var(--st-mark);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.au-was,.au-now{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:14.5px;line-height:1.42}
+.au-was{color:var(--st-ink3)}
+.au-now{color:var(--st-ink);margin-top:3px}
+.au-was em,.au-now em{font-style:normal;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.au-now em{color:var(--st-link)}
+.au-kept{margin:22px 0 0;font-size:14px;color:var(--st-ink2);text-align:center}
+@media (max-width:900px){.au-cmp{grid-template-columns:1fr 1fr;gap:18px}.au-chg{grid-column:1 / -1;order:3}.au-was,.au-now{grid-template-columns:70px 1fr}}
+
+/* ?app — the prototype full screen on a real phone, with a bar that opens the idea panel */
+html.appmode,html.appmode body{height:100%;overflow:hidden;background:#000}
+html.appmode .au-nav,html.appmode .au-top-hero,html.appmode #why,html.appmode #ideas,html.appmode #compare,html.appmode .au-foot,
+html.appmode .au-proto-h,html.appmode #prototype .au-langrow,html.appmode #chips,html.appmode .au-hint,html.appmode .au-qr,html.appmode .au-mobw{display:none!important}
+html.appmode #prototype{padding:0;background:#000}
+html.appmode #prototype .au-wrap{padding:0;max-width:none}
+html.appmode .au-stage{display:block;margin:0}
+html.appmode .phone{position:fixed;top:0;left:0;right:0;margin:0 auto;width:min(100%,480px);height:calc(100% - 56px - env(safe-area-inset-bottom,0px));max-width:none;border-radius:0;padding:0;box-shadow:none;background:#000}
+html.appmode .phone-in{border-radius:0}
+html.appmode .island,html.appmode .sbar{display:none}
+html.appmode .scr .s-pad{padding-top:max(58px,calc(env(safe-area-inset-top,0px) + 16px))}
+html.appmode .scr .s-x,html.appmode .scr .s-lang{top:max(54px,calc(env(safe-area-inset-top,0px) + 10px))}
+.au-appbar,.au-scrim{display:none}
+html.appmode .au-appbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;height:calc(56px + env(safe-area-inset-bottom,0px));padding:0 12px env(safe-area-inset-bottom,0px) 16px;align-items:center;gap:12px;background:#0b0b0c;border-top:1px solid rgba(255,255,255,.1);color:#fff}
+.au-ab-why{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:none;border:0;color:#fff;font-size:14px;font-weight:500;text-align:left;cursor:pointer;padding:0}
+.au-ab-why i{width:8px;height:8px;border-radius:50%;background:var(--st-hi);flex:none}
+.au-ab-why span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.au-ab-why em{font-style:normal;color:rgba(255,255,255,.6);margin-left:auto;flex:none;font-size:13px}
+.au-appbar .au-lsw{background:rgba(255,255,255,.12)}
+.au-appbar .au-lsw button{color:rgba(255,255,255,.75);padding:5px 11px}
+.au-appbar .au-lsw button.on{background:#fff;color:#000}
+html.appmode #panel{position:fixed;left:0;right:0;bottom:0;z-index:80;max-width:none;width:auto;margin:0 auto;border-radius:24px 24px 0 0;max-height:78%;overflow:auto;transform:translateY(105%);transition:transform .3s cubic-bezier(.3,.7,.2,1);padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))}
+html.appmode.au-open #panel{transform:none}
+html.appmode.au-open .au-scrim{display:block;position:fixed;inset:0;z-index:75;background:rgba(0,0,0,.5)}
+
+/* ?tour — 1280×720 walkthrough frames (record-video.sh renders them into assets/walkthrough.mp4) */
+.au-tour{display:none}
+html.tourmode,html.tourmode body{overflow:hidden;background:var(--st-ground)}
+html.tourmode body *{visibility:hidden}
+html.tourmode .phone,html.tourmode .phone *,html.tourmode .au-tour,html.tourmode .au-tour *{visibility:visible}
+html.tourmode .phone{position:fixed;left:170px;top:44px;margin:0;transform:scale(.755);transform-origin:0 0;box-shadow:0 0 0 1.5px #3a3d42,0 34px 80px rgba(0,0,0,.22);z-index:5;max-width:none}
+html.tourmode .au-tour{display:block;position:fixed;inset:0;z-index:6;pointer-events:none;color:var(--st-ink)}
+.au-tb{position:absolute;left:590px;top:30px;display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}
+.au-tb img{width:26px;height:26px;border-radius:7px}
+.au-tb small{font-size:16px;font-weight:400;color:var(--st-ink2)}
+.au-tby{position:absolute;right:48px;top:32px;font-size:14px;color:var(--st-ink3)}
+.au-tcap{position:absolute;left:590px;right:60px;top:50%;transform:translateY(-50%)}
+.au-tk{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:600}
+.au-tk i{width:9px;height:9px;border-radius:50%;background:var(--st-hi);box-shadow:0 0 0 3px var(--st-mark)}
+.au-tk.au-ctx{color:var(--st-ink2)}.au-tk.au-ctx i{background:var(--st-ink3);box-shadow:none}
+.au-tt{font-size:46px;line-height:1.06;font-weight:700;letter-spacing:-.035em;margin:14px 0 14px;text-wrap:balance}
+.au-tl{font-size:23px;line-height:1.36;color:var(--st-ink2);letter-spacing:-.01em;margin:0;max-width:28ch}
+.au-to{margin-top:28px;padding-top:22px;border-top:1px solid var(--st-hair)}
+.au-to small{display:block;font-size:14px;font-weight:600;color:var(--st-ink3)}
+.au-to b{display:inline-block;font-size:62px;font-weight:700;letter-spacing:-.045em;line-height:1.08;color:var(--st-accent);margin-top:4px}
+.au-to span{display:block;font-size:16px;color:var(--st-ink2);margin-top:2px}
+.au-tprog{position:absolute;left:48px;right:48px;bottom:22px;height:4px;border-radius:3px;background:var(--st-hair);overflow:hidden}
+.au-tprog i{display:block;height:100%;background:var(--st-hi)}
+.au-ttap{position:absolute;left:0;top:0;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(255,255,255,.5);box-shadow:0 0 0 2.5px rgba(255,255,255,.9),0 6px 16px rgba(0,0,0,.35);opacity:0}
+.au-tintro,.au-tend{position:absolute;inset:0;background:var(--st-ground);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0}
+.au-tintro .au-lede{margin-top:18px}
+.au-te-h{font-size:46px;line-height:1.08;font-weight:700;letter-spacing:-.035em;margin:0;max-width:18ch;text-wrap:balance}
+.au-te-n{display:flex;gap:64px;margin-top:30px}
+.au-te-n small{display:block;font-size:14px;color:var(--st-ink2)}
+.au-te-n b{display:block;font-size:76px;font-weight:700;letter-spacing:-.045em;line-height:1;color:var(--st-accent);margin:4px 0 6px}
+.au-te-n span{font-size:15px;color:var(--st-ink2)}
+.au-te-q{display:flex;align-items:center;gap:18px;margin-top:34px;background:var(--st-card);border-radius:20px;padding:12px 24px 12px 12px;text-align:left}
+.au-te-q img{width:104px;height:104px;border-radius:10px;image-rendering:pixelated}
+.au-te-q b{display:block;font-size:18px;font-weight:600}
+.au-te-q span{display:block;font-size:15px;color:var(--st-link);margin-top:3px}
+.au-te-f{position:absolute;bottom:44px;left:0;right:0;font-size:13px;color:var(--st-ink3);margin:0}
+
+/* ---------- screen engine (layout only, no colours) ---------- */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--b-bg);color:var(--b-ink);font-family:var(--b-font);
+     transform:translateX(100%);transition:transform .32s cubic-bezier(.3,.7,.2,1);overflow:hidden;text-align:left;line-height:normal;font-size:16px}
+.scr.is-active{transform:none;z-index:2}.scr.is-past{transform:translateX(-28%)}.scr.under{transform:none;z-index:1}
+.scr.sheet{transform:translateY(100%)}.scr.sheet.is-active{transform:none}
+.nofx,.nofx *{transition:none!important}
+.shot .scr{transition:none!important}
+/* ?phone — just the device at (10,10), for shoot.sh and hero-stills.sh (&clear = transparent ground) */
+.phoneonly body{background:#141615}
+.phoneonly.clear body{background:transparent}
+.phoneonly body *{visibility:hidden}
+.phoneonly .phone,.phoneonly .phone *{visibility:visible}
+.phoneonly .phone{position:fixed;top:10px;left:10px;z-index:99;box-shadow:none;max-width:none;margin:0}
+
+/* SCREENS:START — edjing Mix v9: dark graphite ground, rounded graphite cards, PRO blue pill, white type. */
+.s-pad{flex:1;display:flex;flex-direction:column;padding:60px 20px 26px;gap:12px;position:relative;z-index:1;min-height:0}
+.e-top{display:flex;align-items:center;gap:14px;min-height:36px}
+.e-back{flex:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--b-card2);color:var(--b-ink);font:500 24px/1 var(--b-font);display:grid;place-items:center;cursor:pointer;padding:0 2px 4px 0}
+.e-prog{flex:1;height:4px;border-radius:4px;background:var(--b-surface);overflow:hidden}
+.e-prog i{display:block;height:100%;background:var(--b-primary);border-radius:4px}
+.e-h1{font:700 29px/1.12 var(--b-font);letter-spacing:-.022em;margin:12px 0 0}
+.e-sub{font:400 16px/1.42 var(--b-font);color:var(--b-ink2);margin:0}
+.e-cta{margin-top:auto;width:100%;flex:none;border:0;border-radius:var(--b-pill);background:var(--b-primary);color:var(--b-primary-ink);font:600 17px var(--b-font);padding:17px;cursor:pointer;letter-spacing:-.01em}
+.e-cta.e-wait{background:var(--b-surface);color:var(--b-ink2);cursor:default}
+.e-link{background:none;border:0;color:var(--b-ink2);font:500 15px var(--b-font);padding:6px;cursor:pointer;align-self:center}
+.e-ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center}
+.e-ic svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.e-ic img{width:24px;height:24px}
+.e-ib{background:var(--b-primary)}.e-io{background:var(--b-orange)}.e-ig{background:var(--b-green)}.e-ik{background:var(--b-card2)}
+/* welcome */
+.e-intro{align-items:center;text-align:center;padding-top:64px}
+.e-wm{width:96px;height:auto;margin-top:6px}
+.e-art{flex:1;display:flex;align-items:center;justify-content:center;width:100%;min-height:0}
+.e-decks{width:122%;max-width:none;height:auto;margin:0 -11%}
+.e-laurel{display:flex;align-items:center;justify-content:center;gap:10px;font:600 17px var(--b-font)}
+.e-laurel img{width:15px;height:32px}
+.e-laurel img + span + img{transform:scaleX(-1)}
+.e-intro .e-h1{font-size:34px;margin:2px 0 0}
+.e-rate{display:flex;align-items:center;gap:6px;justify-content:center;font:500 14.5px var(--b-font);color:var(--b-ink2);margin:0}
+.e-rate b{color:var(--b-star);font-weight:600;letter-spacing:1px}
+/* quiz rows */
+.e-opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--b-surface);border:1.5px solid transparent;border-radius:var(--b-radius);padding:13px 14px;color:var(--b-ink);cursor:pointer;font-family:var(--b-font)}
+.e-opt.on{background:var(--b-card2);border-color:rgba(255,255,255,.45)}
+.e-opt b{display:block;font:600 16.5px/1.25 var(--b-font)}
+.e-opt small{display:block;font:400 13.5px/1.35 var(--b-font);color:var(--b-ink2);margin-top:2px}
+.e-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+/* music sources */
+.e-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.e-src{display:flex;flex-direction:column;align-items:flex-start;gap:10px;background:var(--b-surface);border:1.5px solid transparent;border-radius:var(--b-radius);padding:14px;color:var(--b-ink);cursor:pointer;font-family:var(--b-font);text-align:left}
+.e-src.on{background:var(--b-card2);border-color:rgba(255,255,255,.45)}
+.e-src img{width:36px;height:36px;border-radius:9px}
+.e-src b{font:600 15.5px var(--b-font)}
+.e-src small{display:block;font:400 12.5px var(--b-font);color:var(--b-ink2);margin-top:2px}
+.e-note{font:400 12.5px/1.4 var(--b-font);color:var(--b-ink2);margin:2px 0 0}
+/* first transition */
+.e-deck{background:var(--b-surface);border-radius:var(--b-radius);padding:13px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.e-dh{display:flex;align-items:center;gap:11px}
+.e-dl{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font:700 13px var(--b-font);color:var(--b-bg)}
+.e-dla{background:var(--b-orange)}.e-dlb{background:var(--b-sky)}
+.e-tt{min-width:0}
+.e-tt b{display:block;font:600 15.5px var(--b-font)}
+.e-tt small{display:block;font:400 12.5px var(--b-font);color:var(--b-ink2);margin-top:1px}
+.e-bpm{margin-left:auto;text-align:right;font:700 21px/1 var(--b-font);font-variant-numeric:tabular-nums;white-space:nowrap}
+.e-bpm small{display:block;font:500 11.5px var(--b-font);color:var(--b-ink2);margin-top:4px;letter-spacing:.04em}
+.e-bpm .e-chg{color:var(--b-primary)}
+.e-wave{height:46px;border-radius:9px;background:var(--b-bg);overflow:hidden}
+.e-wave svg{display:block;width:100%;height:100%}
+.e-mid{display:flex;align-items:center;gap:10px}
+.e-sync{flex:none;border:1.5px solid rgba(255,255,255,.75);background:none;color:var(--b-ink);border-radius:12px;padding:12px 22px;font:700 15px var(--b-font);letter-spacing:.06em;cursor:pointer}
+.e-sync.on{background:var(--b-primary);border-color:var(--b-primary);box-shadow:0 0 0 5px rgba(3,120,236,.25)}
+.e-xf{flex:1;position:relative;height:36px}
+.e-xf i{position:absolute;left:0;right:0;top:17px;height:3px;border-radius:2px;background:var(--b-card2)}
+.e-xf b{position:absolute;top:4px;left:0;width:30px;height:28px;border-radius:6px;background:var(--b-ink);transition:left .9s cubic-bezier(.4,.1,.2,1)}
+.e-xf b::after{content:"";position:absolute;left:14px;top:5px;width:2px;height:18px;background:var(--b-bg)}
+.e-done .e-xf b{left:calc(100% - 30px)}
+.e-xl{flex:none;font:700 12px var(--b-font);color:var(--b-ink2)}
+.e-ok{display:flex;align-items:center;gap:10px;background:rgba(78,217,65,.12);border-radius:14px;padding:11px 13px;font:500 14.5px/1.35 var(--b-font)}
+.e-ok svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--b-green);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.e-hintline{font:400 14.5px/1.35 var(--b-font);color:var(--b-ink2);text-align:center;margin:2px 0 0}
+/* setup payoff */
+.e-set{display:flex;align-items:center;gap:14px;background:var(--b-surface);border-radius:var(--b-radius);padding:14px}
+.e-set em{display:block;font:500 12.5px var(--b-font);font-style:normal;color:var(--b-ink2);letter-spacing:.02em}
+.e-set b{display:block;font:600 17px/1.25 var(--b-font);margin-top:2px}
+.e-set small{display:block;font:400 13.5px/1.35 var(--b-font);color:var(--b-ink2);margin-top:2px}
+.e-set img.e-si{width:42px;height:42px;border-radius:12px;flex:none}
+/* proof */
+.e-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.e-st{background:var(--b-surface);border-radius:16px;padding:13px 6px;text-align:center}
+.e-st b{display:block;font:700 21px var(--b-font);letter-spacing:-.02em}
+.e-st b i{font-style:normal;color:var(--b-star);font-size:18px}
+.e-st small{display:block;font:400 12px/1.3 var(--b-font);color:var(--b-ink2);margin-top:3px}
+.e-quote{background:var(--b-surface);border-radius:var(--b-radius);padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.e-quote img{width:96px;height:auto}
+.e-quote p{margin:0;font:500 17px/1.42 var(--b-font);letter-spacing:-.01em}
+.e-quote small{font:400 13px var(--b-font);color:var(--b-ink2)}
+.e-badges{display:flex;justify-content:center;gap:22px;margin-top:4px}
+.e-badges span{display:flex;align-items:center;gap:7px;font:600 14px var(--b-font)}
+.e-badges img{width:11px;height:24px}
+.e-badges img + b + img{transform:scaleX(-1)}
+.e-badges b{font-weight:600}
+/* paywall */
+.e-pw{gap:10px}
+.e-bar{display:flex;align-items:center;justify-content:center;min-height:36px;position:relative}
+.e-bar .e-wm{width:78px;margin:0}
+.e-pro{font:700 11px var(--b-font);letter-spacing:.08em;background:var(--b-primary);color:var(--b-primary-ink);border-radius:6px;padding:3px 6px;margin-left:8px}
+.s-x{position:absolute;top:60px;right:18px;width:36px;height:36px;border-radius:50%;border:0;background:var(--b-card2);color:var(--b-ink);font:500 15px var(--b-font);display:grid;place-items:center;cursor:pointer;z-index:3}
+.e-pwart{width:84%;height:auto;align-self:center;margin:2px 0 -4px}
+.e-pw .e-h1{font-size:27px;margin-top:0}
+.e-tags{display:flex;flex-wrap:wrap;gap:6px}
+.e-tags span{background:var(--b-surface);border-radius:999px;padding:5px 11px;font:500 12.5px var(--b-font);color:var(--b-ink)}
+.e-ben{display:flex;flex-direction:column;gap:9px;margin:4px 0 2px}
+.e-ben div{display:flex;align-items:center;gap:12px;font:500 15px/1.3 var(--b-font)}
+.e-ben img{width:22px;height:22px;flex:none}
+.e-prf{display:flex;align-items:center;gap:7px;font:500 13px var(--b-font);color:var(--b-ink2);white-space:nowrap}
+.e-prf b{color:var(--b-star);letter-spacing:0}
+.e-plans{display:flex;flex-direction:column;gap:10px;margin-top:2px}
+.e-plan{position:relative;display:flex;align-items:center;gap:12px;width:100%;background:var(--b-surface);border:1.5px solid var(--b-line);border-radius:18px;padding:13px 15px;color:var(--b-ink);cursor:pointer;font-family:var(--b-font);text-align:left}
+.e-plan.on{border-color:var(--b-primary);background:var(--b-card2)}
+.e-dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--b-ink2)}
+.e-plan.on .e-dot{border:7px solid var(--b-primary);background:var(--b-ink)}
+.e-pn b{display:block;font:600 16.5px var(--b-font)}
+.e-pn small{display:block;font:400 13px var(--b-font);color:var(--b-ink2);margin-top:2px;white-space:nowrap}
+.e-pp{margin-left:auto;text-align:right;white-space:nowrap}
+.e-pp b{display:block;font:700 17px var(--b-font)}
+.e-pp small{display:block;font:400 12px var(--b-font);color:var(--b-ink2);margin-top:2px}
+.e-save{position:absolute;top:-10px;right:14px;background:var(--b-star);color:var(--b-bg);font:800 11px var(--b-font);letter-spacing:.04em;border-radius:6px;padding:3px 8px}
+.e-terms{font:400 13px/1.35 var(--b-font);color:var(--b-ink2);text-align:center;margin:0}
+.e-legal{display:flex;justify-content:center;gap:18px;font:400 12px var(--b-font);color:var(--b-ink2)}
+.e-pw .e-cta{margin-top:auto}
+/* offer on close */
+.scr.e-offer{background:rgba(0,0,0,.62)}
+.e-sheet{margin-top:auto;background:var(--b-bg);border-radius:30px 30px 0 0;padding:12px 20px 30px;display:flex;flex-direction:column;gap:12px;position:relative;box-shadow:0 -10px 40px rgba(0,0,0,.4)}
+.e-grab{width:40px;height:5px;border-radius:3px;background:var(--b-card2);align-self:center;margin-bottom:6px}
+.e-sheet .s-x{top:18px}
+.e-eye{font:600 13px var(--b-font);letter-spacing:.06em;color:var(--b-sky);margin:4px 0 0}
+.e-sheet .e-h1{margin:0;font-size:27px;padding-right:40px}
+.e-offc{border:1.5px solid var(--b-primary);background:var(--b-card2);border-radius:18px;padding:15px;display:flex;align-items:center;gap:12px;position:relative;margin-top:6px}
+.e-offc s{color:var(--b-ink2);font:400 14px var(--b-font);margin-right:6px}
+.e-sheet .e-cta{margin-top:8px}
+/* SCREENS:END */
+</style>
+</head>
+<body>
+
+<nav class="au-nav" aria-label="Sections">
+  <div class="au-nav-in">
+    <div class="au-brand">
+      <img src="assets/brand/appstore-icon.jpg" alt="">
+      <span>Growth Audit <small>· edjing Mix</small></span>
+    </div>
+    <a class="au-opt" href="#why">Why this</a>
+    <a href="#ideas">Five ideas</a>
+    <a href="#prototype">Prototype</a>
+    <a class="au-opt" href="#compare" id="navCompare" hidden>Paywall</a>
+  </div>
+</nav>
+
+<header class="au-top-hero" id="top">
+  <div class="au-wrap">
+    <p class="au-eyebrow"><i></i>Growth Audit · October 2026</p>
+    <h1 class="au-display">edjing Mix</h1>
+    <p class="au-lede">Five ideas to turn more new DJs into PRO subscribers. <span>Each one built into edjing’s own screens, so you can tap through it.</span></p>
+    <p class="au-byline">Prepared by Adapty for the edjing Mix team</p>
+    <div class="au-ctas">
+      <a class="au-btn" href="#ideas">See the five ideas</a>
+      <a class="au-lnk" href="#prototype">Open the prototype</a>
+      <button type="button" class="au-lnk au-play" id="heroVideo" hidden>Watch the 30-second walkthrough</button>
+    </div>
+  </div>
+  <!-- filled from CONTENT.hero: three screen ids → assets/hero/<id>.png (make them with hero-stills.sh) -->
+  <div class="au-phones" id="heroPhones" aria-label="Three screens from the prototype"></div>
+</header>
+
+<section class="au-sec au-white" id="why">
+  <div class="au-wrap">
+    <div class="au-split">
+      <div>
+        <p class="au-kicker">Why you’re seeing this</p>
+        <h2 class="au-h2">30,000 subscription apps taught us what moves conversion. <span>Here’s what we’d test first at edjing Mix.</span></h2>
+      </div>
+      <div>
+        <p>Adapty runs subscriptions for <b>more than 30,000 apps</b>, so we see which onboarding and paywall changes lift revenue across the whole market, not just inside one app.</p>
+        <p>We pointed that at edjing Mix. We took <b>your own screens, copy and prices</b> from your App Store listing and edjing.com, and rebuilt the path from install to paywall around the five ideas with the most potential.</p>
+      </div>
+    </div>
+    <div class="au-stats">
+      <div class="au-stat"><b>30,000+</b><span>apps run their subscriptions on Adapty</span></div>
+      <div class="au-stat"><b>5</b><span>ideas, each built as a working screen</span></div>
+      <div class="au-stat"><b>0</b><span>changes to your art direction</span></div>
+    </div>
+    <div class="au-notes">
+      <div class="au-note">
+        <div class="au-ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></div>
+        <h3>Five ideas, not fifteen</h3>
+        <p>We’re not proposing to rebuild every screen. These are the changes with the highest potential, ranked by what we’d test first.</p>
+      </div>
+      <div class="au-note">
+        <div class="au-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17"/></svg></div>
+        <h3>Your design, not ours</h3>
+        <p>Every colour, control and price in the prototype is edjing Mix’s. We changed the order and what gets shown.</p>
+      </div>
+      <div class="au-note">
+        <div class="au-ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13A1.5 1.5 0 0 1 5.5 4H15"/></svg></div>
+        <h3>We hope you haven’t tried these yet</h3>
+        <p>We work from the outside, so we can’t see your live flow or your test history. If you’ve already run one of these, tell us and we’ll go deeper on the rest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="au-sec" id="ideas">
+  <div class="au-wrap">
+    <div class="au-ideas-h">
+      <p class="au-kicker">The shortlist</p>
+      <h2 class="au-h2">Five ideas. <span>Ranked by what we’d test first.</span></h2>
+    </div>
+    <div class="au-list" id="ideaList"></div>
+    <div class="au-band">
+      <div>
+        <p class="au-k">Potential outcome, based on Adapty data</p>
+        <h3>Together they work on three moments: what edjing learns in the first taps, what it shows before the price, and what happens when someone says no.</h3>
+        <p class="au-fn" id="bandFn"></p>
+        <a class="au-btn" href="#prototype">Tap through the prototype</a>
+      </div>
+      <div class="au-nums" id="bandNums"></div>
+    </div>
+  </div>
+</section>
+
+<section class="au-sec au-white" id="prototype">
+  <div class="au-wrap">
+    <div class="au-proto-h">
+      <p class="au-kicker">The prototype</p>
+      <h2 class="au-h2">Every idea, inside your own onboarding.</h2>
+      <p>Tap through it like a new user, or jump straight to an idea. Blue numbers mark the screens that carry one.</p>
+    </div>
+    <div class="au-langrow" id="langRow" hidden><span>Prototype language</span><div class="au-lsw" id="langSw" role="group" aria-label="Prototype language"></div></div>
+    <div class="au-seg" id="chips" role="tablist" aria-label="Screens"></div>
+    <div class="au-stage">
+      <div class="phone"><div class="phone-in">
+        <div class="island"></div>
+        <div class="sbar"><span>9:41</span><span>●●● ▮</span></div>
+
+<!-- SCREENS:START — one section.scr[data-id=ID] per screen, in flow order. Only the screens an idea lands on,
+     plus the context needed to read the flow (~8–10). Wiring: data-go="<id>" · data-back · data-pick="key:value"
+     (+ data-advance="<id>") · data-toggle="key:value" · data-bind="key" / "label:key" / "count:key" ·
+     data-requires="key" · data-show="key:value" · data-input="key" · class="scr sheet" slides up (offer paywall).
+     RULE: images only from assets/ (their app, their site, App Store) — never stock, never hotlinked.
+     Extras: data-t="key" = translatable (markup is CONTENT.langs[0]; other languages in CONTENT.i18n) — keep data-t on
+     leaf-ish elements, never on an element that also carries data-bind/data-pick/data-show;
+     data-langtoggle cycles the language (their own language pill); data-aside keeps a screen out of the flow
+     (the paywall TODAY, rendered only for the side-by-side still). -->
+
+<section class="scr" data-id="intro">
+  <div class="s-pad e-intro">
+    <img class="e-wm" src="assets/site/edjing-wordmark.svg" alt="edjing">
+    <div class="e-art"><img class="e-decks" src="assets/crop/decks.png" alt=""></div>
+    <div class="e-laurel"><img src="assets/site/laurel.svg" alt=""><span data-t="i_badge">Editor’s choice</span><img src="assets/site/laurel.svg" alt=""></div>
+    <h1 class="e-h1" data-t="i_h">The World #1 DJ App</h1>
+    <p class="e-sub" data-t="i_sub">Mix millions of high quality tracks</p>
+    <p class="e-rate"><b>★★★★★</b><span data-t="i_rate">4.6 · 211K ratings</span></p>
+    <button class="e-cta" style="margin-top:22px" data-go="level"><span data-t="i_cta">Get started</span></button>
+  </div>
+</section>
+
+<section class="scr" data-id="level">
+  <div class="s-pad">
+    <div class="e-top"><button class="e-back" data-back aria-label="Back">‹</button><div class="e-prog"><i style="width:25%"></i></div></div>
+    <h1 class="e-h1" data-t="l_h">How much have you DJed?</h1>
+    <p class="e-sub" data-t="l_sub">We’ll open edjing in the mix mode that fits you.</p>
+    <div class="e-list">
+      <button class="e-opt" data-pick="level:new" data-advance="goal"><span class="e-ic e-ib"><svg viewBox="0 0 24 24"><path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.6v4.2c0 1.5 2.5 3.2 5.5 3.2s5.5-1.7 5.5-3.2v-4.2"/></svg></span><span><b data-t="l_new">Never, I want to learn</b><small data-t="l_new_s">Start from zero, on songs you love</small></span></button>
+      <button class="e-opt" data-pick="level:some" data-advance="goal"><span class="e-ic e-io"><svg viewBox="0 0 24 24"><path d="M17 3l3 3-3 3"/><path d="M4 12v-1a5 5 0 0 1 5-5h11"/><path d="M7 21l-3-3 3-3"/><path d="M20 12v1a5 5 0 0 1-5 5H4"/></svg></span><span><b data-t="l_some">A little, I know the basics</b><small data-t="l_some_s">Loops, cues and a few transitions</small></span></button>
+      <button class="e-opt" data-pick="level:pro" data-advance="goal"><span class="e-ic e-ig"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></span><span><b data-t="l_pro">I play sets</b><small data-t="l_pro_s">Parties, gigs, long mixes</small></span></button>
+    </div>
+  </div>
+</section>
+
+<section class="scr" data-id="goal">
+  <div class="s-pad">
+    <div class="e-top"><button class="e-back" data-back aria-label="Back">‹</button><div class="e-prog"><i style="width:50%"></i></div></div>
+    <h1 class="e-h1" data-t="g_h">What do you want to do first?</h1>
+    <p class="e-sub" data-t="g_sub">We’ll put it one tap away.</p>
+    <div class="e-list">
+      <button class="e-opt" data-pick="goal:party" data-advance="source"><span class="e-ic e-io"><img src="assets/crop/feat-music.svg" alt=""></span><span><b data-t="g_party">Mix at a party</b><small data-t="g_party_s">Keep the music going all night</small></span></button>
+      <button class="e-opt" data-pick="goal:learn" data-advance="source"><span class="e-ic e-ib"><svg viewBox="0 0 24 24"><path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.6v4.2c0 1.5 2.5 3.2 5.5 3.2s5.5-1.7 5.5-3.2v-4.2"/></svg></span><span><b data-t="g_learn">Learn to DJ</b><small data-t="g_learn_s">Step-by-step lessons</small></span></button>
+      <button class="e-opt" data-pick="goal:mashup" data-advance="source"><span class="e-ic e-ig"><img src="assets/crop/feat-stemz.svg" alt=""></span><span><b data-t="g_mashup">Make mashups and remixes</b><small data-t="g_mashup_s">Split any song into vocals, drums, bass</small></span></button>
+      <button class="e-opt" data-pick="goal:ctrl" data-advance="source"><span class="e-ic e-ik"><svg viewBox="0 0 24 24"><path d="M5 21v-6M5 11V3M12 21v-9M12 8V3M19 21v-4M19 13V3M2 15h6M9 8h6M16 17h6"/></svg></span><span><b data-t="g_ctrl">Play with my controller</b><small data-t="g_ctrl_s">Pioneer DJ, Hercules, Numark…</small></span></button>
+    </div>
+  </div>
+</section>
+
+<section class="scr" data-id="source">
+  <div class="s-pad">
+    <div class="e-top"><button class="e-back" data-back aria-label="Back">‹</button><div class="e-prog"><i style="width:75%"></i></div></div>
+    <h1 class="e-h1" data-t="s_h">Where’s your music?</h1>
+    <p class="e-sub" data-t="s_sub">Every source is free in edjing. Your library opens here.</p>
+    <div class="e-grid">
+      <button class="e-src" data-pick="source:spotify" data-advance="sync"><img src="assets/site/library-spotify.png" alt=""><span><b>Spotify</b><small data-t="s_spotify">With Spotify Premium</small></span></button>
+      <button class="e-src" data-pick="source:device" data-advance="sync"><img src="assets/site/library-device.png" alt=""><span><b data-t="s_device">On device</b><small data-t="s_device_s">Tracks on your phone</small></span></button>
+      <button class="e-src" data-pick="source:soundcloud" data-advance="sync"><img src="assets/site/library-soundcloud.png" alt=""><span><b>SoundCloud</b><small data-t="s_sc">Your SoundCloud library</small></span></button>
+      <button class="e-src" data-pick="source:beatport" data-advance="sync"><img src="assets/site/library-beatport.png" alt=""><span><b>Beatport</b><small data-t="s_bp">Curated by leading DJs</small></span></button>
+      <button class="e-src" data-pick="source:tidal" data-advance="sync"><img src="assets/site/library-tidal.png" alt=""><span><b>TIDAL</b><small data-t="s_tidal">TIDAL’s catalog</small></span></button>
+      <button class="e-src" data-pick="source:edjing" data-advance="sync"><img src="assets/site/library-edjing.png" alt=""><span><b>edjing Tracks</b><small data-t="s_ej">Hand-picked by our team</small></span></button>
+    </div>
+  </div>
+</section>
+
+<section class="scr" data-id="sync">
+  <div class="s-pad">
+    <div class="e-top"><button class="e-back" data-back aria-label="Back">‹</button><div class="e-prog"><i style="width:100%"></i></div></div>
+    <h1 class="e-h1" data-t="y_h">Your first transition</h1>
+    <p class="e-sub" data-t="y_sub">Two tracks, two tempos. Tap SYNC to lock them together.</p>
+    <div class="e-deck">
+      <div class="e-dh"><span class="e-dl e-dla">A</span><span class="e-tt"><b>Driftin Light</b><small data-t="y_playing">Playing</small></span><span class="e-bpm"><span data-t="y_a">123.0</span><small>BPM</small></span></div>
+      <div class="e-wave" data-wave="a"></div>
+    </div>
+    <div class="e-mid">
+      <button class="e-sync" data-pick="synced:1">SYNC</button>
+      <span class="e-xl">A</span><div class="e-xf"><i></i><b></b></div><span class="e-xl">B</span>
+    </div>
+    <div class="e-deck">
+      <div class="e-dh"><span class="e-dl e-dlb">B</span><span class="e-tt"><b>Lightbeams</b><small data-t="y_cued">Cued up next</small></span>
+        <span class="e-bpm" data-show="synced:0"><span data-t="y_b0">126.0</span><small>BPM</small></span>
+        <span class="e-bpm" data-show="synced:1"><span class="e-chg" data-t="y_b1">123.0</span><small data-t="y_b1s">BPM · −2.4%</small></span></div>
+      <div class="e-wave" data-wave="b"></div>
+    </div>
+    <div data-show="synced:1"><div class="e-ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-t="y_ok">Beatmatched. Both decks at 123 BPM, crossfaded to B. That’s a DJ transition.</span></div></div>
+    <p class="e-hintline" data-show="synced:0"><span data-t="y_hint">Both tracks are your demo tracks. No setup needed.</span></p>
+    <button class="e-cta e-go" data-go="setup" data-show="synced:1"><span data-t="y_cta">Continue</span></button>
+    <button class="e-cta e-wait" data-show="synced:0"><span data-t="y_wait">Tap SYNC first</span></button>
+  </div>
+</section>
+
+<section class="scr" data-id="setup">
+  <div class="s-pad">
+    <div class="e-top"></div>
+    <h1 class="e-h1" data-t="u_h">Your edjing is ready</h1>
+    <p class="e-sub" data-t="u_sub">Set up from your three answers. You can change it anytime.</p>
+    <div class="e-list">
+      <div class="e-set"><span class="e-ic e-ib"><img src="assets/crop/feat-sync.svg" alt=""></span><span><em data-t="u_mode">MIX MODE</em><b data-bind="label:level"></b>
+        <small data-show="level:new"><span data-t="u_new">Fewer controls while you learn</span></small><small data-show="level:some"><span data-t="u_some">Two decks, EQ, loops and hot cues</span></small><small data-show="level:pro"><span data-t="u_pro">Four decks for long sets</span></small></span></div>
+      <div class="e-set"><span class="e-ic e-io"><img src="assets/crop/feat-fx.svg" alt=""></span><span><em data-t="u_first">START WITH</em><b data-bind="label:goal"></b>
+        <small data-show="goal:party"><span data-t="u_party">Pick a playlist. edjing mixes it, beat-matched.</span></small><small data-show="goal:learn"><span data-t="u_learn">DJ School lesson 1: Make your first DJ Mix</span></small><small data-show="goal:mashup"><span data-t="u_mashup">One tap isolates vocals, drums or bass</span></small><small data-show="goal:ctrl"><span data-t="u_ctrl">Plug and play: Pioneer DJ, AlphaTheta, Hercules, Numark, Reloop</span></small></span></div>
+      <div class="e-set"><img class="e-si" id="setupSrc" src="assets/site/library-spotify.png" alt=""><span><em data-t="u_music">YOUR MUSIC</em><b data-bind="label:source"></b><small data-t="u_lib">Your library opens here</small></span></div>
+    </div>
+    <div class="e-ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-t="u_done">First transition done: 126 → 123 BPM, synced.</span></div>
+    <p class="e-note" id="spotNote"><span data-t="u_spot">Stemz can’t split Spotify tracks (Spotify’s terms). It works on the tracks on your device.</span></p>
+    <button class="e-cta" data-go="proof"><span data-t="u_cta">Continue</span></button>
+  </div>
+</section>
+
+<section class="scr" data-id="proof">
+  <div class="s-pad">
+    <div class="e-top"></div>
+    <h1 class="e-h1" data-t="r_h">Used by millions</h1>
+    <p class="e-sub" data-t="r_sub">People across the planet mix with edjing.</p>
+    <div class="e-stats">
+      <div class="e-st"><b><span data-t="r_rt">4.6</span> <i>★</i></b><small data-t="r_rc">211K ratings</small></div>
+      <div class="e-st"><b>250M+</b><small data-t="r_dl">downloads</small></div>
+      <div class="e-st"><b>#1</b><small data-t="r_one">DJ app</small></div>
+    </div>
+    <div class="e-quote">
+      <img src="assets/site/review-stars.svg" alt="5 stars">
+      <p data-show="goal:party"><span data-t="q_party">“This is such an amazing app! It can be used from spicing up short car rides to the grocery store to working up a crowd at a club.”</span></p>
+      <p data-show="goal:learn"><span data-t="q_learn">“This is honestly one of the best djing apps I’ve seen out there. It’s easy to use and learn and allows you to make professional sound in mixes.”</span></p>
+      <p data-show="goal:mashup"><span data-t="q_mashup">“I would recommend this app for people who want to go make remixes and muck around with songs.”</span></p>
+      <p data-show="goal:ctrl"><span data-t="q_ctrl">“Sick app best dj app hands down very impressed scratching is bang on…”</span></p>
+      <small data-t="r_who">iOS user · App Store review</small>
+    </div>
+    <div class="e-badges">
+      <span><img src="assets/site/laurel.svg" alt=""><b data-t="r_ec">Editor’s Choice</b><img src="assets/site/laurel.svg" alt=""></span>
+      <span><img src="assets/site/laurel.svg" alt=""><b data-t="r_aotd">App of the Day</b><img src="assets/site/laurel.svg" alt=""></span>
+    </div>
+    <button class="e-cta" data-go="paywall"><span data-t="r_cta">Continue</span></button>
+  </div>
+</section>
+
+<section class="scr" data-id="paywall">
+  <button class="s-x" data-go="offer" aria-label="Close">✕</button>
+  <div class="s-pad e-pw">
+    <div class="e-bar"><img class="e-wm" src="assets/site/edjing-wordmark.svg" alt="edjing"><span class="e-pro">PRO</span></div>
+    <img class="e-pwart" src="assets/crop/decks.png" alt="">
+    <h1 class="e-h1"><span data-show="goal:party"><span data-t="p_party">Keep the party going with PRO</span></span><span data-show="goal:learn"><span data-t="p_learn">Learn to DJ faster with PRO</span></span><span data-show="goal:mashup"><span data-t="p_mashup">Make mashups no one else can</span></span><span data-show="goal:ctrl"><span data-t="p_ctrl">Get everything from your controller</span></span></h1>
+    <div class="e-tags"><span data-bind="label:level"></span><span data-bind="label:goal"></span><span data-bind="label:source"></span></div>
+    <div class="e-ben">
+      <div><img src="assets/crop/feat-sync.svg" alt=""><span data-t="p_b1">Unlimited access to all Pro features</span></div>
+      <div><img src="assets/crop/feat-stemz.svg" alt=""><span data-t="p_b2">Stemz: split any song, live</span></div>
+      <div><img src="assets/crop/feat-fx.svg" alt=""><span data-t="p_b3">+20 FX and sample packs made by pro DJs</span></div>
+    </div>
+    <div class="e-prf"><b>★★★★★</b><span data-t="p_prf">4.6 · 211K ratings · Editor’s Choice</span></div>
+    <div class="e-plans">
+      <button class="e-plan" data-pick="plan:year"><span class="e-dot"></span><span class="e-pn"><b data-t="p_yn">Annual</b><small data-t="p_yp">$49.99 a year</small></span><span class="e-pp"><b data-t="p_yw">$0.96</b><small data-t="p_pw">per week</small></span><span class="e-save" data-t="p_save">SAVE 88%</span></button>
+      <button class="e-plan" data-pick="plan:week"><span class="e-dot"></span><span class="e-pn"><b data-t="p_wn">Weekly</b><small data-t="p_wp">Billed every week</small></span><span class="e-pp"><b data-t="p_ww">$7.99</b><small data-t="p_pw2">per week</small></span></button>
+    </div>
+    <p class="e-terms" data-show="plan:year"><span data-t="p_ty">Free trial, then $49.99 a year. Cancel anytime.</span></p>
+    <p class="e-terms" data-show="plan:week"><span data-t="p_tw">$7.99 a week. Cancel anytime.</span></p>
+    <button class="e-cta" data-show="plan:year"><span data-t="p_cta">Try PRO for free</span></button>
+    <button class="e-cta" data-show="plan:week"><span data-t="p_cta2">Continue</span></button>
+    <div class="e-legal"><span data-t="p_rs">Restore</span><span data-t="p_tm">Terms</span><span data-t="p_pv">Privacy</span></div>
+  </div>
+</section>
+
+<section class="scr sheet e-offer" data-id="offer">
+  <div class="e-sheet">
+    <div class="e-grab"></div>
+    <button class="s-x" data-back aria-label="Close">✕</button>
+    <p class="e-eye" data-t="o_eye">BEFORE YOU GO</p>
+    <h1 class="e-h1" data-t="o_h">A year of PRO for $40.99</h1>
+    <p class="e-sub" data-t="o_sub">Our lower annual price, once. Everything in PRO, $0.79 a week.</p>
+    <div class="e-offc"><span class="e-dot" style="border:7px solid var(--b-primary);background:var(--b-ink)"></span><span class="e-pn"><b data-t="o_n">Annual</b><small><s data-t="o_was">$49.99</s><span data-t="o_now">$40.99 a year</span></small></span><span class="e-pp"><b data-t="o_w">$0.79</b><small data-t="o_pw">per week</small></span><span class="e-save" data-t="o_off">18% OFF</span></div>
+    <p class="e-terms"><span data-t="o_t">Renews at $40.99 a year. Cancel anytime.</span></p>
+    <button class="e-cta"><span data-t="o_cta">Get PRO for $40.99</span></button>
+    <button class="e-link" data-back><span data-t="o_no">No thanks</span></button>
+  </div>
+</section>
+<!-- SCREENS:END -->
+
+      </div></div>
+      <div class="au-pn" id="panel" aria-live="polite"></div>
+    </div>
+    <p class="au-hint">Close the paywall with ✕ to see idea 5.</p>
+    <!-- shown when CONTENT.liveUrl is set: assets/qr-app.png = qr.swift "<liveUrl>?app" -->
+    <div class="au-qr" id="qrCard" hidden><img src="assets/qr-app.png" alt="QR code that opens the prototype full screen"><div><b>Try it on your phone</b><p>Scan to open the prototype full screen, the way a new user would see it.</p></div></div>
+    <div class="au-mobw" id="qrMob" hidden><a class="au-btn" href="?app">Open it full screen</a></div>
+  </div>
+</section>
+
+<!-- the paywall TODAY vs PROPOSED — built from CONTENT.compare (stills: assets/hero/<today>.png, <proposed>.png) -->
+<section class="au-sec" id="compare" hidden><div class="au-wrap" id="cmpBody"></div></section>
+
+<footer class="au-foot" id="sources">
+  <div class="au-wrap">
+    <details id="srcDetails">
+      <summary>Where the numbers come from</summary>
+      <div class="au-srcs" id="srcBody"></div>
+    </details>
+    <p class="au-fine" id="fine"></p>
+    <div class="au-cta-line">
+      <p>Every screen here can be built and A/B tested in Adapty’s Flow Builder, with no app release.</p>
+      <a class="au-btn" href="https://adapty.io/flow-paywall-builder/" target="_blank" rel="noopener">About Flow Builder</a>
+    </div>
+  </div>
+</footer>
+
+<!-- extras: video dialog (CONTENT.video), ?app bar, ?tour overlay (CONTENT.tour) -->
+<dialog class="au-vid" id="vid" aria-label="Walkthrough video">
+  <div class="au-vid-in"><video id="vidEl" controls muted playsinline preload="none"></video></div>
+  <div class="au-vid-bar"><a id="vidDl" download>Download the MP4</a><button type="button" class="au-vid-x" id="vidX">Close</button></div>
+</dialog>
+<div class="au-scrim" id="abScrim"></div>
+<div class="au-appbar" id="appbar">
+  <button type="button" class="au-ab-why" id="abWhy"><i></i><span id="abT"></span><em>Why ↑</em></button>
+  <div class="au-lsw" id="abLang" role="group" aria-label="Language"></div>
+</div>
+<div class="au-tour" aria-hidden="true">
+  <div class="au-tb"><img src="assets/brand/appstore-icon.jpg" alt="">Growth Audit <small>· edjing Mix</small></div>
+  <div class="au-tby">Prepared by Adapty</div>
+  <div class="au-tcap" id="tCap"></div>
+  <div class="au-ttap" id="tTap"></div>
+  <div class="au-tprog"><i id="tProg"></i></div>
+  <div class="au-tintro" id="tIntro"></div>
+  <div class="au-tend" id="tEnd"></div>
+</div>
+
+<!-- CONTENT — all the audit's words and numbers, as data. Schema (brand-check enforces it):
+     ideas  : 3–5 rows, ranked (the audit is five ideas, never fifteen). screen = the screen that shows it.
+     panel  : one entry per screen. idea = its number in ideas (1-based) or 0 for a context screen.
+              why on an idea screen reads "<b>Try</b> X, <b>because</b> Y." in ≤ 45 words; iv = its range.
+              why on a context screen is one line saying what it sets up.
+     hero   : three screen ids shown as stills in the hero — run hero-stills.sh after the screens are done.
+     outcome: combined "up to" numbers, PS-deck style, never above the ceiling of the per-idea ranges.
+     sources: public facts only — App Store, their site, their screens. No sales research on this page.
+     EXTRAS (each one hides itself when left empty):
+     langs  : [{"code":"en","name":"English"},{"code":"es","name":"Español · Spain prices"}] — first = the markup's language
+     i18n   : {"es": {"<data-t key>": "text with {tokens}"}} — every data-t key, for every language after the first
+     prices : {"es": {"yr": "39,99 €", …}} — {tokens} in i18n strings; that storefront's real IAP prices
+     labelsI18n: {"es": {"goal": {"a": "…"}}} — C.labels per language (data-bind="label:…")
+     liveUrl: final Pages URL (QR card + video end card); the QR file encodes liveUrl + "?app"
+     video / poster: "assets/walkthrough.mp4" / "assets/walkthrough-poster.jpg" (record-video.sh)
+     compare: {today, proposed, kicker, title, sub, todayCap, rows:[{h, idea, was, now}], kept} — today = a data-aside screen
+     tour   : {segments:[{id, d, st, tap:[selector-in-screen, ms], pop, reveal, end}], captions:{id:{n|k, t, l, o, ol}},
+              introLede, endTitle} — ~30 s total; the last segment has end:true (the end card) -->
+<script type="application/json" id="content">
+{
+ "app": "edjing Mix",
+ "state": {
+  "level": "new",
+  "goal": "party",
+  "source": "spotify",
+  "synced": "0",
+  "plan": "year"
+ },
+ "labels": {
+  "level": {
+   "new": "Essential",
+   "some": "Classic",
+   "pro": "4 Decks"
+  },
+  "goal": {
+   "party": "Automix",
+   "learn": "DJ School",
+   "mashup": "Stemz",
+   "ctrl": "Your controller"
+  },
+  "source": {
+   "spotify": "Spotify",
+   "device": "On device",
+   "soundcloud": "SoundCloud",
+   "beatport": "Beatport",
+   "tidal": "TIDAL",
+   "edjing": "edjing Tracks"
+  }
+ },
+ "chips": {
+  "intro": "Welcome",
+  "level": "Level",
+  "goal": "Goal",
+  "source": "Music",
+  "sync": "First mix",
+  "setup": "Your setup",
+  "proof": "Proof",
+  "paywall": "Paywall",
+  "offer": "Offer"
+ },
+ "hero": [
+  "setup",
+  "paywall",
+  "sync"
+ ],
+ "outcome": {
+  "cr": "+20%",
+  "arpu": "+15%"
+ },
+ "ideas": [
+  {
+   "screen": "setup",
+   "title": "Use the answers you collect",
+   "what": "Three taps (how much you’ve DJed, what you want to do first, where your music lives) are enough to open edjing in the right mode with the right first step: Essential and Automix on a Spotify playlist, or 4 Decks and a controller. Then the paywall says it back.",
+   "impact": "+10–20%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "sync",
+   "title": "A first mix before the paywall",
+   "what": "edjing’s wow moment is the beatmatch. Let people tap <code>SYNC</code> on two of your demo tracks, Driftin Light at 123.0 and Lightbeams at 126.0 BPM, and watch the crossfade land before anyone mentions a price.",
+   "impact": "+5–15%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "proof",
+   "title": "Proof before the price",
+   "what": "4.6 stars from 211K ratings, Editor’s Choice, App of the Day and 250M+ downloads are strong. Put them right before the paywall, with a review from your own site that matches the user’s goal, and keep the rating beside the plans.",
+   "impact": "+5–15%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "paywall",
+   "title": "Make the annual saving impossible to miss",
+   "what": "$7.99 a week is $415 a year. Your $49.99 annual plan is $0.96 a week, 88% less. Pre-select it and show both in the same unit, per week, with the saving on the card.",
+   "impact": "+10–15%",
+   "il": "ARPU"
+  },
+  {
+   "screen": "offer",
+   "title": "Catch the people who close the paywall",
+   "what": "When someone taps ✕, show your other real annual price once: $40.99, 18% less, $0.79 a week. No countdown, no inflated price.",
+   "impact": "+10–15%",
+   "il": "ARPU"
+  }
+ ],
+ "panel": {
+  "intro": {
+   "idea": 0,
+   "t": "Your welcome, kept",
+   "why": "Your App Store headline and Editor’s Choice badge open the flow, with the rating under them. Three quick questions follow."
+  },
+  "level": {
+   "idea": 0,
+   "t": "How much have you DJed?",
+   "why": "Sets up idea 1: the answer picks which of your four mix modes edjing opens in."
+  },
+  "goal": {
+   "idea": 0,
+   "t": "What do you want to do first?",
+   "why": "Sets up idea 1: decides the first thing we show, from Automix, DJ School, Stemz or controller support."
+  },
+  "source": {
+   "idea": 0,
+   "t": "Where’s your music?",
+   "why": "Sets up idea 1: the library opens on this source. Every source is free, as your site says."
+  },
+  "sync": {
+   "idea": 2,
+   "t": "A first mix before the paywall",
+   "why": "<b>Try</b> a 20-second first transition (two demo tracks, one SYNC tap, a crossfade), <b>because</b> the beatmatch is when edjing feels like a real DJ setup, and a win inside the product lands harder than a feature list.",
+   "iv": "CR +5–15%",
+   "il": "to purchase"
+  },
+  "setup": {
+   "idea": 1,
+   "t": "Use the answers you collect",
+   "why": "<b>Try</b> a setup screen that turns the three answers into the mode, first step and library edjing opens with, <b>because</b> people who see their answers used convert better than people who were asked and ignored.",
+   "iv": "CR +10–20%",
+   "il": "to purchase",
+   "also": "The paywall repeats the setup in its headline and tags."
+  },
+  "proof": {
+   "idea": 3,
+   "t": "Proof before the price",
+   "why": "<b>Try</b> your rating, badges and one review that matches their goal right before the paywall, <b>because</b> proof works hardest at the moment of decision, and 4.6 stars from 211K ratings is strong.",
+   "iv": "CR +5–15%",
+   "il": "to purchase",
+   "also": "Switch the goal and the review changes with it. The rating repeats on the paywall."
+  },
+  "paywall": {
+   "idea": 4,
+   "t": "Make the annual saving impossible to miss",
+   "why": "<b>Try</b> the annual plan pre-selected, priced per week ($0.96 next to $7.99) with an 88% saving badge, <b>because</b> people compare plans in the unit they see, and next to weekly, annual looks like a steal.",
+   "iv": "ARPU +10–15%",
+   "il": "average revenue per user",
+   "also": "The headline and tags carry the setup (idea 1); the rating line carries idea 3."
+  },
+  "offer": {
+   "idea": 5,
+   "t": "Catch the people who close the paywall",
+   "why": "<b>Try</b> one sheet when someone taps ✕: your $40.99 annual price, $0.79 a week, no countdown, <b>because</b> a second chance right after the onboarding paywall wins back people who said no.",
+   "iv": "ARPU +10–15%",
+   "il": "average revenue per user"
+  }
+ },
+ "langs": [
+  {
+   "code": "en",
+   "name": "English"
+  },
+  {
+   "code": "pt",
+   "name": "Português · preços do Brasil"
+  }
+ ],
+ "i18n": {
+  "pt": {
+   "i_badge": "Escolha do Editor",
+   "i_h": "O app de DJ nº 1 do mundo",
+   "i_sub": "Mixe milhões de faixas em alta qualidade",
+   "i_rate": "{rt} · {rc} avaliações",
+   "i_cta": "Começar",
+   "l_h": "Quanto você já discotecou?",
+   "l_sub": "Vamos abrir o edjing no modo de mixagem certo para você.",
+   "l_new": "Nunca, quero aprender",
+   "l_new_s": "Do zero, com as músicas que você ama",
+   "l_some": "Um pouco, sei o básico",
+   "l_some_s": "Loops, cues e algumas transições",
+   "l_pro": "Eu toco sets",
+   "l_pro_s": "Festas, gigs, mixes longos",
+   "g_h": "O que você quer fazer primeiro?",
+   "g_sub": "Vamos deixar isso a um toque.",
+   "g_party": "Mixar numa festa",
+   "g_party_s": "Música rolando a noite toda",
+   "g_learn": "Aprender a discotecar",
+   "g_learn_s": "Aulas passo a passo",
+   "g_mashup": "Fazer mashups e remixes",
+   "g_mashup_s": "Separe vocal, bateria e baixo de qualquer música",
+   "g_ctrl": "Tocar com minha controladora",
+   "g_ctrl_s": "Pioneer DJ, Hercules, Numark…",
+   "s_h": "Onde está sua música?",
+   "s_sub": "Todas as fontes são grátis no edjing. Sua biblioteca abre aqui.",
+   "s_spotify": "Com Spotify Premium",
+   "s_device": "No aparelho",
+   "s_device_s": "Faixas do seu celular",
+   "s_sc": "Sua biblioteca SoundCloud",
+   "s_bp": "Curadoria de grandes DJs",
+   "s_tidal": "Catálogo do TIDAL",
+   "s_ej": "Seleção da nossa equipe",
+   "y_h": "Sua primeira transição",
+   "y_sub": "Duas faixas, dois andamentos. Toque em SYNC para alinhar.",
+   "y_playing": "Tocando",
+   "y_a": "123,0",
+   "y_cued": "Na fila",
+   "y_b0": "126,0",
+   "y_b1": "123,0",
+   "y_b1s": "BPM · −2,4%",
+   "y_ok": "Batidas alinhadas. Os dois decks a 123 BPM, crossfade para o B. Isso é uma transição de DJ.",
+   "y_hint": "As duas são faixas de demonstração. Sem configurar nada.",
+   "y_cta": "Continuar",
+   "y_wait": "Toque em SYNC primeiro",
+   "u_h": "Seu edjing está pronto",
+   "u_sub": "Montado a partir das suas três respostas. Dá para mudar quando quiser.",
+   "u_mode": "MODO DE MIXAGEM",
+   "u_new": "Menos controles enquanto você aprende",
+   "u_some": "Dois decks, EQ, loops e hot cues",
+   "u_pro": "Quatro decks para sets longos",
+   "u_first": "COMECE COM",
+   "u_party": "Escolha uma playlist. O edjing mixa tudo, no tempo.",
+   "u_learn": "DJ School, aula 1: Make your first DJ Mix",
+   "u_mashup": "Um toque isola vocal, bateria ou baixo",
+   "u_ctrl": "Plug and play: Pioneer DJ, AlphaTheta, Hercules, Numark, Reloop",
+   "u_music": "SUA MÚSICA",
+   "u_lib": "Sua biblioteca abre aqui",
+   "u_done": "Primeira transição feita: 126 → 123 BPM, sincronizado.",
+   "u_spot": "O Stemz não separa faixas do Spotify (termos do Spotify). Funciona com as faixas do seu aparelho.",
+   "u_cta": "Continuar",
+   "r_h": "Usado por milhões",
+   "r_sub": "Gente do mundo todo mixa com o edjing.",
+   "r_rt": "{rt}",
+   "r_rc": "{rc} avaliações",
+   "r_dl": "downloads",
+   "r_one": "app de DJ",
+   "q_party": "“Que app incrível! Serve tanto para animar uma volta curta de carro até o mercado quanto para levantar a pista numa balada.”",
+   "q_learn": "“Sinceramente, um dos melhores apps de DJ que já vi. É fácil de usar e de aprender, e deixa seus mixes com som profissional.”",
+   "q_mashup": "“Recomendo este app para quem quer fazer remixes e brincar com as músicas.”",
+   "q_ctrl": "“App sinistro, melhor app de DJ, sem dúvida. O scratch é perfeito…”",
+   "r_who": "Usuário iOS · avaliação na App Store",
+   "r_ec": "Escolha do Editor",
+   "r_aotd": "App do Dia",
+   "r_cta": "Continuar",
+   "p_party": "Mantenha a festa rolando com o PRO",
+   "p_learn": "Aprenda a discotecar mais rápido com o PRO",
+   "p_mashup": "Faça mashups que ninguém mais faz",
+   "p_ctrl": "Tire tudo da sua controladora",
+   "p_b1": "Acesso ilimitado a todos os recursos Pro",
+   "p_b2": "Stemz: separe qualquer música, ao vivo",
+   "p_b3": "+20 efeitos e pacotes de samples de DJs profissionais",
+   "p_prf": "{rt} · {rc} avaliações · Escolha do Editor",
+   "p_yn": "Anual",
+   "p_yp": "{yr} por ano",
+   "p_yw": "{yrw}",
+   "p_pw": "por semana",
+   "p_save": "ECONOMIZE {save}",
+   "p_wn": "Semanal",
+   "p_wp": "Cobrado toda semana",
+   "p_ww": "{wk}",
+   "p_pw2": "por semana",
+   "p_ty": "Teste grátis, depois {yr} por ano. Cancele quando quiser.",
+   "p_tw": "{wk} por semana. Cancele quando quiser.",
+   "p_cta": "Experimente o PRO grátis",
+   "p_cta2": "Continuar",
+   "p_rs": "Restaurar",
+   "p_tm": "Termos",
+   "p_pv": "Privacidade",
+   "o_eye": "ANTES DE IR",
+   "o_h": "Um ano de PRO por {off}",
+   "o_sub": "Nosso preço anual mais baixo, uma vez só. Tudo do PRO, {offw} por semana.",
+   "o_n": "Anual",
+   "o_was": "{yr}",
+   "o_now": "{off} por ano",
+   "o_w": "{offw}",
+   "o_pw": "por semana",
+   "o_off": "{offpct} OFF",
+   "o_t": "Renova por {off} ao ano. Cancele quando quiser.",
+   "o_cta": "Assinar o PRO por {off}",
+   "o_no": "Agora não"
+  }
+ },
+ "prices": {
+  "pt": {
+   "yr": "R$ 249,90",
+   "wk": "R$ 32,90",
+   "yrw": "R$ 4,81",
+   "save": "85%",
+   "off": "R$ 204,90",
+   "offw": "R$ 3,94",
+   "offpct": "18%",
+   "rt": "4,6",
+   "rc": "18 mil"
+  }
+ },
+ "labelsI18n": {
+  "pt": {
+   "level": {
+    "new": "Essential",
+    "some": "Classic",
+    "pro": "4 Decks"
+   },
+   "goal": {
+    "party": "Automix",
+    "learn": "DJ School",
+    "mashup": "Stemz",
+    "ctrl": "Sua controladora"
+   },
+   "source": {
+    "spotify": "Spotify",
+    "device": "No aparelho",
+    "soundcloud": "SoundCloud",
+    "beatport": "Beatport",
+    "tidal": "TIDAL",
+    "edjing": "edjing Tracks"
+   }
+  }
+ },
+ "liveUrl": "https://eddieatadapty.github.io/edjing-flow-rebuild/",
+ "video": "assets/walkthrough.mp4",
+ "poster": "assets/walkthrough-poster.jpg",
+ "compare": null,
+ "tour": {
+  "introLede": "Five ideas to turn more new DJs into PRO subscribers.",
+  "endTitle": "Five ideas, built into edjing’s own screens.",
+  "segments": [
+   {
+    "id": "intro",
+    "d": 3000,
+    "tap": [
+     ".e-cta",
+     2600
+    ]
+   },
+   {
+    "id": "level",
+    "d": 2000,
+    "tap": [
+     "[data-pick=\"level:new\"]",
+     1300
+    ]
+   },
+   {
+    "id": "goal",
+    "d": 2000,
+    "tap": [
+     "[data-pick=\"goal:party\"]",
+     1300
+    ]
+   },
+   {
+    "id": "source",
+    "d": 2000,
+    "tap": [
+     "[data-pick=\"source:spotify\"]",
+     1300
+    ]
+   },
+   {
+    "id": "sync",
+    "d": 2400,
+    "st": {
+     "synced": "0"
+    },
+    "tap": [
+     ".e-sync",
+     1900
+    ]
+   },
+   {
+    "id": "sync",
+    "d": 2600,
+    "st": {
+     "synced": "1"
+    },
+    "reveal": ".e-ok",
+    "tap": [
+     ".e-go",
+     2200
+    ]
+   },
+   {
+    "id": "setup",
+    "d": 3200,
+    "reveal": ".e-ok",
+    "tap": [
+     ".e-cta",
+     2800
+    ]
+   },
+   {
+    "id": "proof",
+    "d": 2600,
+    "tap": [
+     ".e-cta",
+     2200
+    ]
+   },
+   {
+    "id": "paywall",
+    "d": 3000,
+    "pop": ".e-save"
+   },
+   {
+    "id": "paywall",
+    "d": 1400,
+    "tap": [
+     ".s-x",
+     700
+    ]
+   },
+   {
+    "id": "offer",
+    "d": 3000
+   },
+   {
+    "id": "offer",
+    "d": 2800,
+    "end": true
+   }
+  ],
+  "captions": {
+   "intro": {
+    "k": "Context",
+    "t": "Your welcome, kept",
+    "l": "Your headline, Editor’s Choice and 4.6 stars open the flow."
+   },
+   "level": {
+    "k": "Context",
+    "t": "Three quick taps",
+    "l": "How much have you DJed? It picks the mix mode."
+   },
+   "goal": {
+    "k": "Context",
+    "t": "What first?",
+    "l": "A party, lessons, mashups or a controller."
+   },
+   "source": {
+    "k": "Context",
+    "t": "Where’s the music?",
+    "l": "The library opens on their source."
+   },
+   "sync": {
+    "n": 2,
+    "t": "A first mix before the paywall",
+    "l": "One SYNC tap: two tracks, one tempo.",
+    "o": "+5–15%",
+    "ol": "CR to purchase"
+   },
+   "setup": {
+    "n": 1,
+    "t": "Use the answers you collect",
+    "l": "Their mode, first step and music, set up.",
+    "o": "+10–20%",
+    "ol": "CR to purchase"
+   },
+   "proof": {
+    "n": 3,
+    "t": "Proof before the price",
+    "l": "4.6 stars, badges and a review that fits.",
+    "o": "+5–15%",
+    "ol": "CR to purchase"
+   },
+   "paywall": {
+    "n": 4,
+    "t": "Make the annual saving obvious",
+    "l": "$0.96 a week next to $7.99: save 88%.",
+    "o": "+10–15%",
+    "ol": "ARPU"
+   },
+   "offer": {
+    "n": 5,
+    "t": "Catch the people who close",
+    "l": "Your real $40.99 annual price. No countdown.",
+    "o": "+10–15%",
+    "ol": "ARPU"
+   }
+  }
+ },
+ "grounding": "Impact ranges are Adapty’s expected effect from teardowns and A/B tests across 30,000+ subscription apps, not measured lift for edjing Mix. They overlap, so they don’t add up.",
+ "sources": [
+  {
+   "group": "Prices",
+   "items": [
+    {
+     "dt": "$49.99 a year · $7.99 a week",
+     "dd": "“Annual subscription” and “Weekly subscription” in the In-App Purchases list of your <a href=\"https://apps.apple.com/us/app/edjing-mix-dj-music-mixer-app/id493226494\" target=\"_blank\" rel=\"noopener\">US App Store listing</a>. $0.96 a week = $49.99 ÷ 52; 88% = 1 − $49.99 ÷ ($7.99 × 52 = $415.48)."
+    },
+    {
+     "dt": "$40.99 a year (offer on close)",
+     "dd": "The second “Annual subscription” in the same list. We assume $49.99 is your standard price and $40.99 a promo price: 18% less, $0.79 a week."
+    },
+    {
+     "dt": "R$ 249,90 · R$ 204,90 · R$ 32,90",
+     "dd": "The same three products on your <a href=\"https://apps.apple.com/br/app/edjing-mix-mixagem-de-m%C3%BAsica/id493226494\" target=\"_blank\" rel=\"noopener\">Brazil listing</a>; R$ 4,81 and R$ 3,94 a week and 85% are recomputed from them. We picked Brazil over France because your French listing shows no annual price."
+    },
+    {
+     "dt": "Not used",
+     "dd": "Annually Premium Pass $39.99, Weekly Pro+ Plan $9.99, Weekly Premium pass $8.99, and the one-time Premium Version, Full Pack and edjing Bundle."
+    }
+   ]
+  },
+  {
+   "group": "Proof",
+   "items": [
+    {
+     "dt": "4.6 from 211K ratings",
+     "dd": "US App Store listing (210,736 ratings, October 2026). Brazil: 4.6 from 18,213, shown as “18 mil”."
+    },
+    {
+     "dt": "Editor’s Choice, App of the Day, 250M+ downloads, #1 DJ app",
+     "dd": "edjing.com homepage and your first App Store screenshot (“Editor’s choice · The World #1 DJ App”)."
+    },
+    {
+     "dt": "Reviews",
+     "dd": "Quoted from the “Our users. Used by millions” section on edjing.com (iOS users), shortened with … where cut. The Portuguese versions are our translation."
+    }
+   ]
+  },
+  {
+   "group": "Features and copy",
+   "items": [
+    {
+     "dt": "Welcome copy",
+     "dd": "“The World #1 DJ App” and “Editor’s choice” from App Store screenshot 1; “Mix millions of high quality tracks” from screenshot 5."
+    },
+    {
+     "dt": "Mix modes, Automix, controllers, Spotify",
+     "dd": "edjing.com/spotify: four mix modes (Classic, Essential, Automix, 4 Decks), Automix for playlists, Pioneer DJ / AlphaTheta / Hercules / Numark / Reloop support, and “stem separation is not allowed with Spotify tracks”. Which level maps to which mode is our proposal."
+    },
+    {
+     "dt": "DJ School, demo tracks, PRO",
+     "dd": "Lesson title “Make your first DJ Mix” and “Try PRO for free” from the v9 screen on edjing.com; Driftin Light and Lightbeams from App Store screenshot 4; “unlimited access to all Pro features of edjing Mix and Stemz” from edjing.com/premium; +20 FX and sample packs from screenshots 6–7."
+    }
+   ]
+  },
+  {
+   "group": "Design",
+   "items": [
+    {
+     "dt": "Colours",
+     "dd": "Sampled off the v9 screens on edjing.com: ground #18191c, cards #23252a, PRO blue #0378ec, stars #f9b624, lesson icons #ea860b and #4ed941."
+    },
+    {
+     "dt": "Type and art",
+     "dd": "SF Pro (the system font your app uses), Inter as fallback. Wordmark, laurel, review stars, library icons, feature icons (shown at full opacity) and the decks image all come from edjing.com. No stock."
+    }
+   ]
+  },
+  {
+   "group": "What we couldn’t see",
+   "items": [
+    {
+     "dt": "Your live onboarding and paywall",
+     "dd": "edjing isn’t in the ScreensDesign library, so these screens are proposed, not rebuilt, and there’s no today-vs-proposed comparison yet. Send a screen recording and we’ll add it."
+    },
+    {
+     "dt": "Trial and PRO contents",
+     "dd": "How long the free trial is, which plan carries it, and which features are PRO-only."
+    },
+    {
+     "dt": "Orientation",
+     "dd": "edjing runs in landscape on iPhone. We laid the prototype out in portrait so it fits this page; the same screens work in landscape."
+    }
+   ]
+  }
+ ]
+}
+</script>
+
+<script>
+/* edjing hooks: waveforms + beat grid on the SYNC screen, done-states after it, source icon on the setup, the Spotify/Stemz note */
+var SRC_ICON = {spotify: 'assets/site/library-spotify.png', device: 'assets/site/library-device.png', soundcloud: 'assets/site/library-soundcloud.png',
+  beatport: 'assets/site/library-beatport.png', tidal: 'assets/site/library-tidal.png', edjing: 'assets/site/library-edjing.png'};
+function waveSVG(seed, col, beat, off){
+  var w = 330, h = 46, s = '', x, r = seed;
+  for (x = 0; x < w; x += 3) { r = (r * 9301 + 49297) % 233280; var a = .25 + .75 * Math.abs(Math.sin(x / 17 + seed)) * (.55 + .45 * r / 233280); var bh = Math.max(3, a * (h - 8));
+    s += '<rect x="' + x + '" y="' + ((h - bh) / 2).toFixed(1) + '" width="2" height="' + bh.toFixed(1) + '" rx="1" fill="' + col + '"/>'; }
+  for (x = off; x < w; x += beat) s += '<rect x="' + x.toFixed(1) + '" y="0" width="1.2" height="' + h + '" fill="rgba(255,255,255,.55)"/>';
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' + s + '</svg>';
+}
+window.onSync = function(S){
+  var on = S.synced === '1';
+  document.querySelectorAll('[data-wave]').forEach(function(el){
+    var a = el.dataset.wave === 'a';
+    var k = a ? 'a' : (on ? 'b1' : 'b0');
+    if (el._k === k) return; el._k = k;
+    el.innerHTML = a ? waveSVG(3, 'var(--b-orange)', 41, 12) : on ? waveSVG(7, 'var(--b-sky)', 41, 12) : waveSVG(7, 'var(--b-sky)', 39.4, 27);
+  });
+  scr.sync.classList.toggle('e-done', on);
+  var ic = document.getElementById('setupSrc'); if (ic && SRC_ICON[S.source]) ic.src = SRC_ICON[S.source];
+  var n = document.getElementById('spotNote'); if (n) n.style.display = S.source === 'spotify' && S.goal === 'mashup' ? '' : 'none';
+};
+window.onEnter = function(id, S){
+  if (/[?&]tour\b/.test(location.search)) return;
+  var want = id === 'sync' ? (HERO ? '1' : '0') : ORDER.indexOf(id) > ORDER.indexOf('sync') ? '1' : S.synced;
+  if (want !== S.synced) { S.synced = want; sync(); }
+};
+</script>
+<script>
+/* ============ engine — generic, do not fork per app ============ */
+var C = JSON.parse(document.getElementById('content').textContent);
+var S = C.state, scr = {}, ORDER = [], hist = [], cur = null, Q = location.search;
+var SHOT = /[?&](shot|phone|tour)\b/.test(Q), HERO = /[?&]hero\b/.test(Q);
+/* a screen with data-aside (e.g. the paywall TODAY for the side-by-side) renders for stills but is not part of the flow */
+document.querySelectorAll('.scr').forEach(function(s){ scr[s.dataset.id] = s; if (!s.hasAttribute('data-aside')) ORDER.push(s.dataset.id); });
+if (/[?&]shot\b/.test(Q)) document.documentElement.classList.add('shot');
+if (/[?&]phone\b/.test(Q)) document.documentElement.classList.add('shot', 'phoneonly');
+if (/[?&]clear\b/.test(Q)) document.documentElement.classList.add('clear');
+var IDEAS = (C.ideas || []).length;
+
+/* ---- languages: markup is the first language; C.i18n[lang][data-t key] the others; {tokens} from C.prices[lang] ---- */
+var LANGS = C.langs || [], BASE = LANGS.length ? LANGS[0].code : 'en', LANG_DONE = BASE, BASE_LABELS = JSON.parse(JSON.stringify(C.labels || {}));
+if (!S.lang) S.lang = BASE;
+function fillP(s, l){ var P = (C.prices || {})[l] || {}; return String(s).replace(/\{(\w+)\}/g, function(m, k){ return k in P ? P[k] : m; }); }
+function applyLang(){
+  var l = S.lang || BASE; if (l === LANG_DONE) return;
+  var T = (C.i18n || {})[l] || {};
+  document.querySelectorAll('.phone [data-t]').forEach(function(el){
+    if (el._base == null) el._base = el.innerHTML;
+    el.innerHTML = l === BASE || T[el.dataset.t] == null ? el._base : fillP(T[el.dataset.t], l);
+  });
+  C.labels = JSON.parse(JSON.stringify(BASE_LABELS));
+  var LL = (C.labelsI18n || {})[l] || {}; Object.keys(LL).forEach(function(k){ C.labels[k] = LL[k]; });
+  LANG_DONE = l;
+}
+function setLang(l){
+  if (!LANGS.some(function(x){ return x.code === l; })) return;
+  S.lang = l; sync();
+  document.querySelectorAll('[data-setlang]').forEach(function(b){ b.classList.toggle('on', b.dataset.setlang === l); });
+  if (window.onLang) window.onLang(l);
+}
+
+function lab(key){ var v = S[key]; var L = C.labels[key]; if (Array.isArray(v)) return v.map(function(x){ return L && L[x] || x; }).join(', '); return (L && L[v]) || v; }
+function sync(){
+  applyLang();
+  document.querySelectorAll('[data-bind]').forEach(function(el){
+    var b = el.dataset.bind, m = b.split(':');
+    el.textContent = m[0] === 'label' ? lab(m[1]) : m[0] === 'count' ? (S[m[1]] || []).length : (S[b] == null ? '' : S[b]);
+  });
+  document.querySelectorAll('[data-pick]').forEach(function(el){ var p = el.dataset.pick.split(':'); el.classList.toggle('on', S[p[0]] === p[1]); });
+  document.querySelectorAll('[data-toggle]').forEach(function(el){ var p = el.dataset.toggle.split(':'); el.classList.toggle('on', (S[p[0]] || []).indexOf(p[1]) > -1); });
+  document.querySelectorAll('[data-requires]').forEach(function(el){ el.disabled = !(S[el.dataset.requires] || []).length; });
+  document.querySelectorAll('[data-show]').forEach(function(el){ var p = el.dataset.show.split(':'); el.style.display = String(S[p[0]]) === p[1] ? '' : 'none'; });
+  if (window.onSync) window.onSync(S);
+}
+function show(id, dir){
+  var from = scr[cur], to = scr[id]; if (!to || id === cur) return;
+  var sheet = to.classList.contains('sheet');
+  if (from){
+    from.classList.remove('is-active');
+    if (sheet) from.classList.add('under');                                   /* a sheet slides up over the screen that opened it */
+    else if (dir === 'fwd' && !from.classList.contains('sheet')) from.classList.add('is-past');
+  }
+  if (!sheet) Object.keys(scr).forEach(function(k){ var u = scr[k]; if (u !== to && u.classList.contains('under')) { u.classList.remove('under'); if (dir === 'fwd') u.classList.add('is-past'); } });
+  to.classList.remove('is-past', 'under'); to.classList.add('is-active'); cur = id;
+  paint(); if (window.onEnter) window.onEnter(id, S);
+}
+function go(id){ if (cur) hist.push(cur); show(id, 'fwd'); }
+function back(){ if (hist.length) { var p = hist.pop(); scr[cur].classList.remove('is-active'); show(p, 'back'); } }
+function jump(id){
+  Object.keys(scr).forEach(function(k){ scr[k].classList.add('nofx'); scr[k].classList.remove('is-active', 'is-past', 'under'); });
+  var i = ORDER.indexOf(id); hist = ORDER.slice(0, i < 0 ? 0 : i); cur = null;
+  ORDER.slice(0, i).forEach(function(k){ if (!scr[k].classList.contains('sheet')) scr[k].classList.add('is-past'); });
+  if (scr[id] && scr[id].classList.contains('sheet')) {                        /* jumping to a sheet: its opener stays visible under it */
+    for (var j = i - 1; j >= 0; j--) if (!scr[ORDER[j]].classList.contains('sheet')) { scr[ORDER[j]].classList.remove('is-past'); scr[ORDER[j]].classList.add('under'); break; }
+  }
+  show(id, 'jump');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ Object.keys(scr).forEach(function(k){ scr[k].classList.remove('nofx'); }); }); });
+}
+function stepBy(d){ var i = ORDER.indexOf(cur) + d; if (i >= 0 && i < ORDER.length) jump(ORDER[i]); }
+function jumpTo(id){
+  var p = document.getElementById('prototype');
+  if (p && !document.documentElement.classList.contains('appmode')) p.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+  jump(id);
+}
+function paint(){
+  sync();
+  var c = document.getElementById('chips');
+  if (!c.childElementCount) ORDER.forEach(function(id){
+    var p = C.panel[id] || {}, b = document.createElement('button');
+    b.className = 'au-chip'; b.type = 'button'; b.dataset.id = id; b.setAttribute('role', 'tab');
+    b.innerHTML = (p.idea ? '<i>' + p.idea + '</i>' : '') + ((C.chips && C.chips[id]) || id);
+    b.onclick = function(){ jump(id); };
+    c.appendChild(b);
+  });
+  c.querySelectorAll('.au-chip').forEach(function(b){ var on = b.dataset.id === cur; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+  var d = C.panel[cur] || {t: cur, why: ''}, n = ORDER.indexOf(cur) + 1;
+  document.getElementById('panel').innerHTML =
+    (d.idea ? '<div class="au-pn-k"><i></i>Idea ' + d.idea + ' of ' + IDEAS + '</div>' : '<div class="au-pn-k au-ctx"><i></i>Context</div>') +
+    '<h3 class="au-pn-t">' + d.t + '</h3><p class="au-pn-h">' + d.why + '</p>' +
+    (d.iv ? '<div class="au-pn-o"><div class="au-lab">Potential outcome · based on Adapty data</div><div class="au-val"><mark>' + d.iv + '</mark></div><div class="au-sub">' + (d.il || '') + '</div></div>' : '') +
+    (d.also ? '<p class="au-pn-a">' + d.also + '</p>' : '') +
+    '<div class="au-pn-nav"><button type="button" onclick="stepBy(-1)"' + (n <= 1 ? ' disabled' : '') + '>‹ Previous</button><span>Screen ' + n + ' of ' + ORDER.length + '</span><button type="button" onclick="stepBy(1)"' + (n === ORDER.length ? ' disabled' : '') + '>Next ›</button></div>';
+  var ab = document.getElementById('abT'); if (ab) ab.textContent = (d.idea ? 'Idea ' + d.idea + ' of ' + IDEAS + ' · ' : '') + (d.t || '');
+}
+document.addEventListener('click', function(e){
+  var j = e.target.closest('[data-jumpto]'); if (j){ e.preventDefault(); jumpTo(j.dataset.jumpto); return; }
+  var L = e.target.closest('[data-setlang]'); if (L){ setLang(L.dataset.setlang); return; }
+  if (e.target.closest('[data-langtoggle]') && LANGS.length > 1){ var k = LANGS.findIndex(function(x){ return x.code === S.lang; }); setLang(LANGS[(k + 1) % LANGS.length].code); return; }
+  var el = e.target.closest('[data-go],[data-back],[data-pick],[data-toggle]'); if (!el) return;
+  if (el.dataset.pick){ var p = el.dataset.pick.split(':'); S[p[0]] = p[1]; sync(); if (el.dataset.advance) setTimeout(function(){ go(el.dataset.advance); }, 170); return; }
+  if (el.dataset.toggle){ var q = el.dataset.toggle.split(':'), a = S[q[0]] = S[q[0]] || [], i = a.indexOf(q[1]); if (i > -1) a.splice(i, 1); else a.push(q[1]); sync(); return; }
+  if ('back' in el.dataset) return back();
+  go(el.dataset.go);
+});
+document.querySelectorAll('[data-input]').forEach(function(inp){
+  inp.value = S[inp.dataset.input] || ''; inp.addEventListener('input', function(){ S[inp.dataset.input] = inp.value.trim() || 'there'; sync(); });
+});
+function $(id){ return document.getElementById(id); }
+
+/* hero stills, shortlist, outcome, sources — from CONTENT */
+$('heroPhones').innerHTML = (C.hero || []).map(function(id, i){
+  var pos = ['l', 'c', 'r'][i] || 'r', t = (C.chips && C.chips[id]) || id;
+  return '<button class="au-hp au-' + pos + '" data-jumpto="' + id + '" aria-label="Open ' + t + '"><img src="assets/hero/' + id + '.png" alt=""></button>';
+}).join('');
+$('ideaList').innerHTML = (C.ideas || []).map(function(r, i){
+  return '<article class="au-idea"><div class="au-num">0' + (i + 1) + '</div><div><h3>' + r.title + '</h3><p>' + r.what + '</p>' +
+    '<button type="button" class="au-lnk" data-jumpto="' + r.screen + '">See it on the screen</button></div>' +
+    '<div class="au-imp"><div class="au-v"><mark>' + r.impact + '</mark></div><div class="au-l">' + r.il + '</div></div></article>';
+}).join('');
+var O = C.outcome || {};
+$('bandNums').innerHTML =
+  (O.cr ? '<div><small>up to</small><b>' + O.cr + '</b><span>CR to purchase</span></div>' : '') +
+  (O.arpu ? '<div><small>up to</small><b>' + O.arpu + '</b><span>ARPU</span></div>' : '');
+$('bandFn').textContent = C.grounding;
+$('fine').textContent = C.grounding + ' Prepared by Adapty.';
+$('srcBody').innerHTML = C.sources.map(function(g){
+  return '<div><h4>' + g.group + '</h4><dl>' + g.items.map(function(it){ return '<dt>' + it.dt + '</dt><dd>' + it.dd + '</dd>'; }).join('') + '</dl></div>';
+}).join('');
+function openSrc(){ var d = $('srcDetails'); d.open = true; d.scrollIntoView({block: 'start'}); }
+
+/* ---- extras: language control, the paywall side by side, QR / phone view, the video ---- */
+if (LANGS.length > 1) {
+  $('langRow').hidden = false;
+  var lb = LANGS.map(function(x){ return '<button type="button" data-setlang="' + x.code + '">' + x.name + '</button>'; }).join('');
+  $('langSw').innerHTML = lb;
+  $('abLang').innerHTML = LANGS.map(function(x){ return '<button type="button" data-setlang="' + x.code + '">' + x.code.toUpperCase() + '</button>'; }).join('');
+}
+var CM = C.compare;
+if (CM && scr[CM.today] && scr[CM.proposed]) {
+  $('compare').hidden = false; $('navCompare').hidden = false;
+  $('cmpBody').innerHTML = '<div class="au-ideas-h"><p class="au-kicker">' + (CM.kicker || 'The paywall, side by side') + '</p><h2 class="au-h2">' + (CM.title || 'Today and proposed.') + (CM.sub ? ' <span>' + CM.sub + '</span>' : '') + '</h2></div>' +
+    '<div class="au-cmp"><figure><img src="assets/hero/' + CM.today + '.png" alt="Your paywall today"><figcaption>Today <span>· ' + (CM.todayCap || 'rebuilt from your recording') + '</span></figcaption></figure>' +
+    '<ol class="au-chg">' + (CM.rows || []).map(function(r){
+      return '<li><h4>' + r.h + (r.idea ? ' <i>Idea ' + r.idea + '</i>' : '') + '</h4><span class="au-was"><em>Today</em>' + r.was + '</span><span class="au-now"><em>Proposed</em>' + r.now + '</span></li>';
+    }).join('') + '</ol>' +
+    '<figure><button type="button" class="au-cmp-go" data-jumpto="' + CM.proposed + '" aria-label="Open the proposed paywall"><img src="assets/hero/' + CM.proposed + '.png" alt="The proposed paywall"></button><figcaption>Proposed <span>· tap to try it</span></figcaption></figure></div>' +
+    (CM.kept ? '<p class="au-kept">' + CM.kept + '</p>' : '');
+}
+if (C.liveUrl) { $('qrCard').hidden = false; $('qrMob').hidden = false; }
+if (/[?&]app\b/.test(Q)) {
+  var H0 = document.documentElement; H0.classList.add('appmode');
+  var openP = function(o){ H0.classList.toggle('au-open', o); $('abWhy').querySelector('em').textContent = o ? 'Close ↓' : 'Why ↑'; };
+  $('abWhy').onclick = function(){ openP(!H0.classList.contains('au-open')); };
+  $('abScrim').onclick = function(){ openP(false); };
+}
+if (C.video) {
+  var dlg = $('vid'), vel = $('vidEl'); vel.src = C.video; if (C.poster) vel.poster = C.poster; $('vidDl').href = C.video;
+  $('heroVideo').hidden = false;
+  $('heroVideo').onclick = function(){ dlg.showModal(); vel.play().catch(function(){}); };
+  $('vidX').onclick = function(){ dlg.close(); };
+  dlg.addEventListener('close', function(){ vel.pause(); });
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) dlg.close(); });
+}
+
+/* ---- ?tour: a deterministic walkthrough from C.tour — tourAt(ms) paints one frame; record-video.sh records it ---- */
+function tourInit(){
+  var T = C.tour, H = document.documentElement, TR = T.transition || 360;
+  H.classList.add('tourmode', 'shot'); document.body.classList.add('nofx');
+  var SEG = T.segments, START = [], STATE = [], UNDER = [], acc = 0, st = JSON.parse(JSON.stringify(C.state));
+  SEG.forEach(function(s, i){
+    START.push(acc); acc += s.d;
+    Object.keys(s.st || {}).forEach(function(k){ st[k] = s.st[k]; }); STATE.push(JSON.parse(JSON.stringify(st)));
+    var u = null; if (scr[s.id].classList.contains('sheet')) for (var j = i - 1; j >= 0; j--) if (!scr[SEG[j].id].classList.contains('sheet')) { u = SEG[j].id; break; }
+    UNDER.push(u);
+  });
+  var TOTAL = acc, capEl = $('tCap'), tap = $('tTap'), pressed = null, popped = [];
+  $('tIntro').innerHTML = '<p class="au-eyebrow"><i></i>' + document.querySelector('.au-top-hero .au-eyebrow').textContent + '</p><h1 class="au-display">' + C.app + '</h1>' +
+    '<p class="au-lede">' + (T.introLede || document.querySelector('.au-top-hero .au-lede').innerHTML) + '</p>';
+  $('tEnd').innerHTML = '<p class="au-eyebrow"><i></i>Growth Audit · ' + C.app + '</p><h2 class="au-te-h">' + (T.endTitle || 'Five ideas, built into your own onboarding.') + '</h2>' +
+    '<div class="au-te-n">' + (O.cr ? '<div><small>up to</small><b>' + O.cr + '</b><span>CR to purchase</span></div>' : '') + (O.arpu ? '<div><small>up to</small><b>' + O.arpu + '</b><span>ARPU</span></div>' : '') + '</div>' +
+    (C.liveUrl ? '<div class="au-te-q"><img src="assets/qr-app.png" alt=""><div><b>Try it on your phone</b><span>' + C.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') + '</span></div></div>' : '') +
+    '<p class="au-te-f">' + C.grounding + '</p>';
+  function ease(x){ return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  function easeBack(x){ var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  function capHTML(c){
+    c = c || {k: '', t: '', l: ''};
+    return '<div class="au-tk' + (c.n ? '' : ' au-ctx') + '"><i></i>' + (c.n ? 'Idea ' + c.n + ' of ' + IDEAS : (c.k || 'Context')) + '</div><h2 class="au-tt">' + c.t + '</h2><p class="au-tl">' + (c.l || '') + '</p>' +
+      (c.o ? '<div class="au-to"><small>Potential outcome · based on Adapty data</small><b><mark>' + c.o + '</mark></b><span>' + (c.ol || '') + '</span></div>' : '');
+  }
+  function place(id, tf, z){ scr[id].style.transform = tf; scr[id].style.zIndex = z; }
+  window.TOUR_MS = TOTAL;
+  window.tourAt = function(ms){
+    ms = Math.max(0, Math.min(TOTAL - 1, ms));
+    var i = 0; while (i < SEG.length - 1 && ms >= START[i + 1]) i++;
+    var s = SEG[i], local = ms - START[i], prev = i > 0 ? SEG[i - 1] : null;
+    Object.keys(STATE[i]).forEach(function(k){ S[k] = STATE[i][k]; }); sync();
+    var moving = prev && prev.id !== s.id && local < TR, p = moving ? ease(local / TR) : 1;
+    Object.keys(scr).forEach(function(k){ scr[k].classList.remove('is-active', 'is-past', 'under'); place(k, 'translateX(100%)', 0); });
+    var B = scr[s.id];
+    if (moving) {
+      if (B.classList.contains('sheet')) { place(prev.id, 'none', 1); B.style.transform = 'translateY(' + (1 - p) * 100 + '%)'; }
+      else {
+        var slide = 'translateX(' + (-28 * p) + '%)'; place(prev.id, slide, 1); B.style.transform = 'translateX(' + (1 - p) * 100 + '%)';
+        if (UNDER[i - 1]) place(UNDER[i - 1], slide, 0);
+      }
+    } else B.style.transform = 'none';
+    B.style.zIndex = 2;
+    if (UNDER[i] && !moving) place(UNDER[i], 'none', 1);
+    /* optional reveal: s.pop scales an element in, s.reveal fades one in a beat later */
+    popped.forEach(function(e){ e.style.transform = ''; e.style.opacity = ''; }); popped = [];
+    var q = Math.max(0, Math.min(1, (local - 250) / 550));
+    if (s.pop) { var pe = B.querySelector(s.pop); if (pe) { pe.style.transform = 'scale(' + (.55 + .45 * easeBack(q)) + ')'; pe.style.opacity = Math.min(1, q * 1.6); popped.push(pe); } }
+    if (s.reveal) { var re = B.querySelector(s.reveal); if (re) { re.style.opacity = Math.max(0, Math.min(1, (local - 520) / 300)); popped.push(re); } }
+    /* caption crossfades at screen changes; waits for the intro, gives way to the end card */
+    var key = s.id, op = 1;
+    if (moving) { if (p < .5) { key = prev.id; op = 1 - p * 2; } else op = p * 2 - 1; }
+    if (capEl.dataset.k !== key) { capEl.innerHTML = capHTML(T.captions[key]); capEl.dataset.k = key; }
+    var io = ms < 1100 ? 1 : Math.max(0, 1 - (ms - 1100) / 300), eo = s.end ? Math.min(1, local / 350) : 0;
+    capEl.style.opacity = op * Math.max(0, Math.min(1, (ms - 1400) / 300)) * (1 - eo);
+    /* the finger: fades in, taps, ripples out. Selectors are scoped to the screen */
+    tap.style.opacity = 0; if (pressed) { pressed.style.opacity = ''; pressed = null; }
+    if (s.tap) {
+      var el = B.querySelector(s.tap[0]), dt = local - s.tap[1];
+      if (el && dt > -260 && dt < 420) {
+        var r = el.getBoundingClientRect();
+        tap.style.left = (r.left + r.width / 2) + 'px'; tap.style.top = (r.top + r.height / 2) + 'px';
+        if (dt < 0) { tap.style.opacity = (dt + 260) / 260 * .9; tap.style.transform = 'scale(1)'; }
+        else { tap.style.opacity = .9 * (1 - dt / 420); tap.style.transform = 'scale(' + (1 + dt / 420 * .9) + ')'; }
+        if (dt >= 0 && dt < 160) { el.style.opacity = .72; pressed = el; }
+      }
+    }
+    $('tIntro').style.opacity = T.intro === false ? 0 : io;
+    $('tEnd').style.opacity = eo;
+    $('tProg').style.width = (ms / TOTAL * 100) + '%';
+    cur = s.id;
+    return i;
+  };
+  var tm = /[?&]t=(\d+)/.exec(Q); tourAt(tm ? +tm[1] : 0);
+}
+
+/* boot: #<screen-id> deep-links a screen (shoot.sh / hero-stills.sh use it); ?lang=xx picks the language */
+(function(){
+  var lm = /[?&]lang=(\w+)/.exec(Q); if (lm) setLang(lm[1]); else setLang(S.lang);
+  var h = location.hash.slice(1);
+  jump(scr[h] ? h : ORDER[0]);
+  if (scr[h] && !SHOT && !document.documentElement.classList.contains('appmode')) setTimeout(function(){ $('prototype').scrollIntoView(); }, 0);
+  if (/[?&]tour\b/.test(Q) && C.tour) tourInit();
+})();
+</script>
+</body>
+</html>
